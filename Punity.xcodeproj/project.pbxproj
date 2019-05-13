@@ -12,6 +12,10 @@
 		E0E27B4822890444005B4F22 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0E27B4622890444005B4F22 /* Main.storyboard */; };
 		E0E27B4A22890446005B4F22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0E27B4922890446005B4F22 /* Assets.xcassets */; };
 		E0E27B4D22890446005B4F22 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0E27B4B22890446005B4F22 /* LaunchScreen.storyboard */; };
+		E0E27B552289134A005B4F22 /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E27B542289134A005B4F22 /* FirebaseController.swift */; };
+		E0E27B5722891507005B4F22 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0E27B5622891507005B4F22 /* GoogleService-Info.plist */; };
+		E0E27B59228916F1005B4F22 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E27B58228916F1005B4F22 /* User.swift */; };
+		E0E27B5B228918A8005B4F22 /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E27B5A228918A8005B4F22 /* Podcast.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +26,10 @@
 		E0E27B4922890446005B4F22 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0E27B4C22890446005B4F22 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E0E27B4E22890446005B4F22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0E27B542289134A005B4F22 /* FirebaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
+		E0E27B5622891507005B4F22 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E0E27B58228916F1005B4F22 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E0E27B5A228918A8005B4F22 /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +68,10 @@
 				E0E27B4922890446005B4F22 /* Assets.xcassets */,
 				E0E27B4B22890446005B4F22 /* LaunchScreen.storyboard */,
 				E0E27B4E22890446005B4F22 /* Info.plist */,
+				E0E27B5622891507005B4F22 /* GoogleService-Info.plist */,
+				E0E27B542289134A005B4F22 /* FirebaseController.swift */,
+				E0E27B58228916F1005B4F22 /* User.swift */,
+				E0E27B5A228918A8005B4F22 /* Podcast.swift */,
 			);
 			path = Punity;
 			sourceTree = "<group>";
@@ -123,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0E27B4D22890446005B4F22 /* LaunchScreen.storyboard in Resources */,
+				E0E27B5722891507005B4F22 /* GoogleService-Info.plist in Resources */,
 				E0E27B4A22890446005B4F22 /* Assets.xcassets in Resources */,
 				E0E27B4822890444005B4F22 /* Main.storyboard in Resources */,
 			);
@@ -135,8 +148,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0E27B59228916F1005B4F22 /* User.swift in Sources */,
+				E0E27B552289134A005B4F22 /* FirebaseController.swift in Sources */,
 				E0E27B4522890444005B4F22 /* ViewController.swift in Sources */,
 				E0E27B4322890444005B4F22 /* AppDelegate.swift in Sources */,
+				E0E27B5B228918A8005B4F22 /* Podcast.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
