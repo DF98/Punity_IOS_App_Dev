@@ -9,7 +9,8 @@
 import Foundation
 class Podcast
 {
-    //---variables--
-    var pod_name
-    
+    //---VARIABLES--
+    var pod_name:String
+    var pod_videos:[Video]
+    var pod_message
 }
