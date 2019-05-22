@@ -10,7 +10,8 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
+    var databaseController : DatabaseProtocol?
     var window: UIWindow?
 
 

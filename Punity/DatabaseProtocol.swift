@@ -30,16 +30,20 @@ protocol DatabaseListener: AnyObject {
 }
 protocol DatabaseProtocol: AnyObject {
     //var defaultTeam: Team {get}
-    
+    /*
     //--USERS--
     func addUser(id: Int, username:String, password:String, email:String, dob: Date, country: String) -> User
     func deleteUser(user: User)
+     */
+    
     //--PODCASTS--
     func addPodcast(name: String, videos: [Video])
     func deletePodcast(podcast: Podcast)
     //--VIDEO--
-    func addVideo(title: String, description:String, publishdate: Date, comments: [Comment], likes :Int, dislikes: Int)
-    func deletVideo(video: Video)
+    func addVideo(title: String, description:String, publishdate: Date, comments: [Comment], likes :Int, dislikes: Int, link: String)
+    func deleteVideo(video: Video)
+    func getVideoIndexByID(reference: String) -> Int?
+    func getVideoByID(reference: String) ->Video?
     
     //--REMOVE/ADD LISTENER FUNCTIONS
     func addListener(listener: DatabaseListener)

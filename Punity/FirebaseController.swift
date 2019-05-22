@@ -16,29 +16,7 @@ import FirebaseFirestore
 
 
 class FirebaseController: NSObject, DatabaseProtocol {
-    func addUser(id: Int, username: String, password: String, email: String, dob: Date, country: String) -> User {
-        <#code#>
-    }
-    
-    func deleteUser(user: User) {
-        <#code#>
-    }
-    
-    func addPodcast(name: String, videos: [Video]) {
-        <#code#>
-    }
-    
-    func deletePodcast(podcast: Podcast) {
-        <#code#>
-    }
-    
-    func addVideo(title: String, description: String, publishdate: Date, comments: [Comment], likes: Int, dislikes: Int) {
-        <#code#>
-    }
-    
-    func deletVideo(video: Video) {
-        <#code#>
-    }
+  
     
     
 
@@ -46,16 +24,19 @@ class FirebaseController: NSObject, DatabaseProtocol {
     var listeners = MulticastDelegate<DatabaseListener>()
     var authController: Auth
     var database: Firestore
+    
+    //******** REFERENCES  ***********
     var usersRef: CollectionReference?
     var podcastsRef: CollectionReference?
     var videosRef: CollectionReference?
     var commentsRef: CollectionReference?
     
-    
+    //******** LISTS  ***********
     var userList: [User]
     var podcastList: [Podcast]
     var videoList: [Video]
     var commentList: [Comment]
+    
     //var defaultTeam: Team
     
     override init() {
@@ -66,7 +47,10 @@ class FirebaseController: NSObject, DatabaseProtocol {
         database = Firestore.firestore()
         userList = [User]()
         //defaultTeam = Team()
-        
+        userList = [User]()
+        podcastList = [Podcast]()
+        videoList = [Video]()
+        commentList = [Comment]()
         super.init()
         
         // This will START THE PROCESS of signing in with an anonymous account
@@ -183,6 +167,20 @@ class FirebaseController: NSObject, DatabaseProtocol {
         return nil
     }
     
+    func addPodcast(name: String, videos: [Video])
+    {
+        let podcast = Podcast()
+        let id = podcastsRef?.addDocument(data: ["pod_name": name, "pod_videos": videos])
+        
+        podcast.pod_name = name
+        podcast.pod_videos = videos
+        podcast.pod_id = id!.documentID
+    }
+    
+    func deletePodcast(podcast: Podcast) {
+        podcastsRef?.document(podcast.pod_id).delete()
+    }
+    
 //*****************************************************************************************
     
 
@@ -250,11 +248,42 @@ class FirebaseController: NSObject, DatabaseProtocol {
             if(video.video_id == reference)
             {
                 //this line throws an error
-                //return videoList.first(of: video)
+                //return videoList.firstIndex(of: video)
             }
         }
         
         return nil
+    }
+    
+    func getVideoByID(reference: String) ->Video?
+    {
+        for video in videoList
+        {
+            if(video.video_id == reference)
+            {
+                return video
+            }
+        }
+        return nil
+    }
+    
+    func addVideo(title: String, description: String, publishdate: Date, comments: [Comment], likes: Int, dislikes: Int, link: String) {
+        let video = Video()
+        let id = videosRef?.addDocument(data: ["video_title": title, "video_desc": description,"video_pubdate": publishdate ,"video_comments": comments, "video_likes": likes,"video_dislikes": dislikes, "video_link": link ])
+       
+        video.video_title = title
+        video.video_desc = description
+        video.video_pubdate = publishdate
+        video.video_comments = comments
+        video.video_likes = likes
+        video.video_dislikes = dislikes
+        video.video_link = link
+        video.video_id = id!.documentID
+        
+    }
+    
+    func deleteVideo(video: Video) {
+        videosRef?.document(video.video_id).delete()
     }
    
 //*****************************************************************************************
