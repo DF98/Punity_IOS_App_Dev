@@ -16,22 +16,32 @@ enum DatabaseChange {
 enum ListenerType {
     case podcasts
     case users
+    case videos
     case all
 }
 protocol DatabaseListener: AnyObject {
     var listenerType: ListenerType {get set}
-    func onTeamChange(change: DatabaseChange, teamHeroes: [SuperHero])
-    func onHeroListChange(change: DatabaseChange, heroes: [SuperHero])
+    func onPodcastListChange(change: DatabaseChange, podcasts: [Podcast])
+    func onUserListChange(change: DatabaseChange, users: [User])
+    func onVideoListChange(change: DatabaseChange, videos: [Video])
+    
+    //func onTeamChange(change: DatabaseChange, teamHeroes: [SuperHero])
+    //func onHeroListChange(change: DatabaseChange, heroes: [SuperHero])
 }
 protocol DatabaseProtocol: AnyObject {
-    var defaultTeam: Team {get}
+    //var defaultTeam: Team {get}
     
-    func addSuperHero(name: String, abilities: String) -> SuperHero
-    func addTeam(teamName: String) -> Team
-    func addHeroToTeam(hero: SuperHero, team: Team) -> Bool
-    func deleteSuperHero(hero: SuperHero)
-    func deleteTeam(team: Team)
-    func removeHeroFromTeam(hero: SuperHero, team: Team)
+    //--USERS--
+    func addUser(id: Int, username:String, password:String, email:String, dob: Date, country: String) -> User
+    func deleteUser(user: User)
+    //--PODCASTS--
+    func addPodcast(name: String, videos: [Video])
+    func deletePodcast(podcast: Podcast)
+    //--VIDEO--
+    func addVideo(title: String, description:String, publishdate: Date, comments: [Comment], likes :Int, dislikes: Int)
+    func deletVideo(video: Video)
+    
+    //--REMOVE/ADD LISTENER FUNCTIONS
     func addListener(listener: DatabaseListener)
     func removeListener(listener: DatabaseListener)
 }

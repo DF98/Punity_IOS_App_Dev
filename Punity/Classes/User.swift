@@ -10,14 +10,26 @@ import Foundation
 
 class User
 {
+    var userID: Int
     var username: String
     var password: String
     var email: String
     var dob: Date
     var country: String
     
-    init(username:String, password:String, email:String, dob: Date, country: String)
+    init()
     {
+        self.userID = 0
+        self.username = ""
+        self.password = ""
+        self.email = ""
+        self.dob = Date()
+        self.country = ""
+    }
+    
+    init(id: Int, username:String, password:String, email:String, dob: Date, country: String)
+    {
+        self.userID = id
         self.username = username
         self.password = password
         self.email = email
