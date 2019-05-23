@@ -7,9 +7,11 @@
 //
 
 import Foundation
-class Video
+
+class Video: NSObject
 {
     //--VARIABLES--
+    
     var video_id: String
     var video_title: String
     var video_desc: String
@@ -22,7 +24,8 @@ class Video
 
     //--CONSTRUCTORS--
     
-    init()
+    
+    override init()
     {
         self.video_id = ""
         self.video_title = ""
@@ -33,6 +36,8 @@ class Video
         self.video_dislikes = 0
         self.video_link = ""
     }
+ 
+     
     
     
     init(id: String, title: String, description:String, publishdate: Date, comments: [Comment], likes :Int, dislikes: Int, link: String)

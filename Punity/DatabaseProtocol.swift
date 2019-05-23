@@ -21,7 +21,7 @@ enum ListenerType {
 }
 protocol DatabaseListener: AnyObject {
     var listenerType: ListenerType {get set}
-    func onPodcastListChange(change: DatabaseChange, podcasts: [Podcast])
+    func onPodcastChange(change: DatabaseChange, podcastVideos: [Video])
     func onUserListChange(change: DatabaseChange, users: [User])
     func onVideoListChange(change: DatabaseChange, videos: [Video])
     
@@ -29,7 +29,7 @@ protocol DatabaseListener: AnyObject {
     //func onHeroListChange(change: DatabaseChange, heroes: [SuperHero])
 }
 protocol DatabaseProtocol: AnyObject {
-    //var defaultTeam: Team {get}
+    var defaultPodcast: Podcast {get}
     /*
     //--USERS--
     func addUser(id: Int, username:String, password:String, email:String, dob: Date, country: String) -> User
@@ -37,13 +37,16 @@ protocol DatabaseProtocol: AnyObject {
      */
     
     //--PODCASTS--
-    func addPodcast(name: String, videos: [Video])
+    func addPodcast(name: String, videos: [Video]) -> Podcast
     func deletePodcast(podcast: Podcast)
     //--VIDEO--
-    func addVideo(title: String, description:String, publishdate: Date, comments: [Comment], likes :Int, dislikes: Int, link: String)
+    func addVideo(title: String, description:String, publishdate: Date, comments: [Comment], likes :Int, dislikes: Int, link: String) ->Video
     func deleteVideo(video: Video)
     func getVideoIndexByID(reference: String) -> Int?
     func getVideoByID(reference: String) ->Video?
+    //-- VIDEO/PODCAST --
+    func addVideoToPodcast(video: Video, podcast: Podcast) -> Bool
+    func removeVideoFromPodcast(video: Video, podcast: Podcast)
     
     //--REMOVE/ADD LISTENER FUNCTIONS
     func addListener(listener: DatabaseListener)

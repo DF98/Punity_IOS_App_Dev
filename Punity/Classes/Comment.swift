@@ -7,7 +7,8 @@
 //
 
 import Foundation
-class Comment
+
+class Comment: NSObject
 {
     //--VARIABLES--
     var comment_content: String

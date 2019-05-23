@@ -8,7 +8,7 @@
 
 import Foundation
 
-class User
+class User: NSObject
 {
     var userID: Int
     var username: String
@@ -17,7 +17,8 @@ class User
     var dob: Date
     var country: String
     
-    init()
+    
+    override init()
     {
         self.userID = 0
         self.username = ""
@@ -26,6 +27,7 @@ class User
         self.dob = Date()
         self.country = ""
     }
+ 
     
     init(id: Int, username:String, password:String, email:String, dob: Date, country: String)
     {
