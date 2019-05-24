@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 class Video: NSObject
 {
@@ -15,7 +16,7 @@ class Video: NSObject
     var video_id: String
     var video_title: String
     var video_desc: String
-    var video_pubdate: Date
+    var video_pubdate: Timestamp
     var video_comments:[Comment]
     var video_likes: Int
     var video_dislikes: Int
@@ -30,7 +31,7 @@ class Video: NSObject
         self.video_id = ""
         self.video_title = ""
         self.video_desc = ""
-        self.video_pubdate = Date()
+        self.video_pubdate = Timestamp()
         self.video_comments = []
         self.video_likes = 0
         self.video_dislikes = 0
@@ -40,7 +41,7 @@ class Video: NSObject
      
     
     
-    init(id: String, title: String, description:String, publishdate: Date, comments: [Comment], likes :Int, dislikes: Int, link: String)
+    init(id: String, title: String, description:String, publishdate: Timestamp, comments: [Comment], likes :Int, dislikes: Int, link: String)
     {
         self.video_id = id
         self.video_title = title
@@ -53,3 +54,5 @@ class Video: NSObject
     }
     
 }
+
+

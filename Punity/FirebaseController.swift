@@ -1,3 +1,5 @@
+
+
 //
 //  FirebaseController.swift
 //  Punity
@@ -16,6 +18,8 @@ import FirebaseFirestore
 
 
 class FirebaseController: NSObject, DatabaseProtocol {
+   
+    
 
 
     let DEFAULT_TEAM_NAME = "Cool Podcast"
@@ -270,7 +274,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         snapshot.documentChanges.forEach { change in
             let documentRef = change.document.documentID
             let title = change.document.data()["video_title"] as! String
-            let pub_date = change.document.data()["video_pubdate"] as! Date
+            let pub_date = change.document.data()["video_pubdate"] as! Timestamp
             let description = change.document.data()["video_desc"] as! String
             let comments = change.document.data()["video_comments"] as!  [Comment]
             let dislikes = change.document.data()["video_dislikes"] as! Int
@@ -346,14 +350,14 @@ class FirebaseController: NSObject, DatabaseProtocol {
         return nil
     }
     
-    func addVideo(title: String, description: String, publishdate: Date, comments: [Comment], likes: Int, dislikes: Int, link: String) -> Video
+    func addVideo(title: String, description: String, publishdate: Timestamp, comments: [Comment], likes: Int, dislikes: Int, link: String) -> Video
     {
         let video = Video()
         let id = videosRef?.addDocument(data: ["video_title": title, "video_desc": description,"video_pubdate": publishdate ,"video_comments": comments, "video_likes": likes,"video_dislikes": dislikes, "video_link": link ])
        
         video.video_title = title
         video.video_desc = description
-        video.video_pubdate = publishdate
+        video.video_pubdate = publishdate as Timestamp
         video.video_comments = comments
         video.video_likes = likes
         video.video_dislikes = dislikes
@@ -545,5 +549,12 @@ class FirebaseController: NSObject, DatabaseProtocol {
     func removeListener(listener: DatabaseListener) {
         listeners.removeDelegate(listener)
     }
+    
+
+    
+ 
+    
 }
+
+
 

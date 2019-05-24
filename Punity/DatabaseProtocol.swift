@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 enum DatabaseChange {
     case add
@@ -40,7 +41,7 @@ protocol DatabaseProtocol: AnyObject {
     func addPodcast(name: String, videos: [Video]) -> Podcast
     func deletePodcast(podcast: Podcast)
     //--VIDEO--
-    func addVideo(title: String, description:String, publishdate: Date, comments: [Comment], likes :Int, dislikes: Int, link: String) ->Video
+    func addVideo(title: String, description:String, publishdate: Timestamp, comments: [Comment], likes :Int, dislikes: Int, link: String) ->Video
     func deleteVideo(video: Video)
     func getVideoIndexByID(reference: String) -> Int?
     func getVideoByID(reference: String) ->Video?
