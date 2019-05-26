@@ -10,19 +10,51 @@ import UIKit
 
 
 
-class PodcastsTableViewController: UITableViewController, PodcastParserDelgate {
+class PodcastsTableViewController: UITableViewController, UISearchResultsUpdating, DatabaseListener{
+    func onPodcastChange(change: DatabaseChange, podcastVideos: [Video]) {
+        
+    }
+    
+    func onUserListChange(change: DatabaseChange, users: [User]) {
+        
+    }
+    
+    func onVideoListChange(change: DatabaseChange, videos: [Video]) {
+        
+    }
+    
 
+    
 let XML_URL = "http://joeroganexp.joerogan.libsynpro.com/rss"
 let PODCAST_CELL = "podcastCell"
+
+let SECTION_PODCAST = 0;
+let SECTION_COUNT = 1;
+let CELL_PODCAST = "podcastCell"
+let CELL_COUNT = "totalPodcastsCell"
+    
 var allPodcasts: [Podcast] = []
+var filteredPodcasts: [Podcast] = []
+weak var podcastDelegate: AddPodcastDelegate?
+weak var databaseController: DatabaseProtocol?
+    
+    
+
+    
+    
+    
     
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let xmlParser = PodcastXMLDecoder()
-        xmlParser.parsePodcastXMLWithURL(url: XML_URL, listener: self)
+        // Get the database controller once from the App Delegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        databaseController = appDelegate.databaseController
+        
+        //let xmlParser = PodcastXMLDecoder()
+       //xmlParser.parsePodcastXMLWithURL(url: XML_URL, listener: self)
         
         
         // Uncomment the following line to preserve selection between presentations
@@ -31,7 +63,51 @@ var allPodcasts: [Podcast] = []
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 
+        filteredPodcasts = allPodcasts
+        
+        let searchController = UISearchController(searchResultsController: nil);
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Podcasts"
+        navigationItem.searchController = searchController
+        
+        // This view controller decides how the search controller is presented.
+        definesPresentationContext = true
+        
+        
 
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        databaseController?.addListener(listener: self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        databaseController?.removeListener(listener: self)
+    }
+
+     var listenerType = ListenerType.podcasts
+    
+ func onPodcastListChange(change: DatabaseChange, podcasts: [Podcast])
+ {
+    allPodcasts = podcasts
+    updateSearchResults(for: navigationItem.searchController!)
+}
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text?.lowercased(),
+            searchText.count > 0 {
+            filteredPodcasts = allPodcasts.filter({(podcast: Podcast) -> Bool in
+                return podcast.pod_name.lowercased().contains(searchText)
+            })
+        }
+        else {
+            filteredPodcasts = allPodcasts;
+        }
+        
+        tableView.reloadData();
     }
 
     // MARK: - Table view data source
@@ -48,16 +124,14 @@ var allPodcasts: [Podcast] = []
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: PODCAST_CELL, for: indexPath) as! PodcastTableViewCell
         
         let podcast = allPodcasts[indexPath.row]
         
         cell.backgroundColor = UIColor.green
-        cell.titleLabel.text = "hello"
-        
-        
-        print(podcast.pod_name)
-        
+        cell.titleLabel.text = podcast.pod_name
+
         return cell
     }
     

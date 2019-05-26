@@ -40,6 +40,7 @@ protocol DatabaseProtocol: AnyObject {
     //--PODCASTS--
     func addPodcast(name: String, videos: [Video]) -> Podcast
     func deletePodcast(podcast: Podcast)
+    func onPodcastListChange(change: DatabaseChange, podcasts: [Podcast])
     //--VIDEO--
     func addVideo(title: String, description:String, publishdate: Timestamp, comments: [Comment], likes :Int, dislikes: Int, link: String) ->Video
     func deleteVideo(video: Video)

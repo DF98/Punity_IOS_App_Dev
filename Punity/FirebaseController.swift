@@ -9,7 +9,7 @@
 //
 
 
-import Foundation
+
 import UIKit
 import Firebase
 import FirebaseAuth
@@ -18,11 +18,9 @@ import FirebaseFirestore
 
 
 class FirebaseController: NSObject, DatabaseProtocol {
-   
-    
+  
 
-
-    let DEFAULT_TEAM_NAME = "Cool Podcast"
+    let DEFAULT_PODCAST_NAME = "Cool Podcast"
     var listeners = MulticastDelegate<DatabaseListener>()
     var authController: Auth
     var database: Firestore
@@ -50,7 +48,6 @@ class FirebaseController: NSObject, DatabaseProtocol {
         database = Firestore.firestore()
         userList = [User]()
         //defaultTeam = Team()
-        userList = [User]()
         podcastList = [Podcast]()
         videoList = [Video]()
         commentList = [Comment]()
@@ -83,7 +80,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         }
         
         podcastsRef = database.collection("podcasts")
-        podcastsRef?.whereField("pod_name", isEqualTo: DEFAULT_TEAM_NAME).addSnapshotListener { querySnapshot,
+        podcastsRef?.whereField("pod_name", isEqualTo: DEFAULT_PODCAST_NAME).addSnapshotListener { querySnapshot,
             error in
             guard let documents = querySnapshot?.documents else {
                 print("Error fetching teams: \(error!)")
@@ -146,6 +143,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         defaultPodcast = Podcast()
         defaultPodcast.pod_name = (snapshot.data()["pod_name"] as! String)
         defaultPodcast.pod_id = snapshot.documentID
+        
         if let videoReferences = snapshot.data()["videos"] as? [DocumentReference] {
             // If the document has a "heroes" field, add heroes.
             for reference in videoReferences {
@@ -165,7 +163,9 @@ class FirebaseController: NSObject, DatabaseProtocol {
         
     }
     
-    
+    func onPodcastListChange(change: DatabaseChange, podcasts: [Podcast]) {
+        
+    }
     
     
     

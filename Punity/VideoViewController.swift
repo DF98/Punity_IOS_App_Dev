@@ -8,15 +8,21 @@
 
 import UIKit
 import AVKit
+import FirebaseFirestore
 
 class VideoViewController: UIViewController {
     var audioPlayer: AVAudioPlayer?
     
+    @IBOutlet weak var testLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
+        
+        
+        
+        // Do any additional setup after loading the view.
+        /*
         let musicURL = URL(string: "https://audioboom.com/posts/7243055.mp3")
         let task = URLSession.shared.dataTask(with: musicURL!)
             self.finishedDownload = true
@@ -27,8 +33,9 @@ class VideoViewController: UIViewController {
             self.audioPlayer = try AVAudioPlayer(data: musicData!)
         }
         task.resume()
- 
+ */
     }
+ 
     
 
     /*
@@ -42,3 +49,4 @@ class VideoViewController: UIViewController {
     */
 
 }
+

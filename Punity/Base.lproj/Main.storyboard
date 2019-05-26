@@ -13,7 +13,7 @@
         <!--Podcasts Table View Controller-->
         <scene sceneID="8lF-6S-5w2">
             <objects>
-                <tableViewController id="Ktb-Fk-lx6" customClass="PodcastsTableViewController" customModule="Punity" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Ktb-Fk-lx6" customClass="PodcastsTableViewController" customModule="Punity" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vKb-rs-ZPn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -50,7 +50,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uJR-kX-2MB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2673" y="257"/>
+            <point key="canvasLocation" x="1247" y="274"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3j3-ky-RgJ">
@@ -63,7 +63,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="HfC-UH-yDf" kind="relationship" relationship="rootViewController" id="Adw-86-wfl"/>
+                        <segue destination="Ktb-Fk-lx6" kind="relationship" relationship="rootViewController" id="Nun-Ry-FuD"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uWX-JW-ssD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -174,7 +174,7 @@
         <!--VideoPage-->
         <scene sceneID="6Co-QJ-6pM">
             <objects>
-                <viewController title="VideoPage" id="HfC-UH-yDf" sceneMemberID="viewController">
+                <viewController title="VideoPage" id="HfC-UH-yDf" customClass="VideoViewController" customModule="Punity" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="B5R-lb-69Q">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -194,15 +194,25 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r4C-Mr-AS8">
+                                <rect key="frame" x="154" y="171" width="115" height="67"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="I0n-1k-Iah"/>
                     </view>
                     <navigationItem key="navigationItem" id="GDz-zY-dHF"/>
+                    <connections>
+                        <outlet property="testLabel" destination="r4C-Mr-AS8" id="sb3-Aj-2RJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jVk-Dz-5QU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1313" y="274"/>
+            <point key="canvasLocation" x="1960.8" y="273.91304347826087"/>
         </scene>
     </scenes>
 </document>
