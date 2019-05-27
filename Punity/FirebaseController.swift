@@ -141,10 +141,11 @@ class FirebaseController: NSObject, DatabaseProtocol {
     
     func parsePodcastSnapshot(snapshot: QueryDocumentSnapshot) {
         defaultPodcast = Podcast()
+        print(snapshot)
         defaultPodcast.pod_name = (snapshot.data()["pod_name"] as! String)
         defaultPodcast.pod_id = snapshot.documentID
         
-        if let videoReferences = snapshot.data()["videos"] as? [DocumentReference] {
+        if let videoReferences = snapshot.data()["pod_videos"] as? [DocumentReference] {
             // If the document has a "heroes" field, add heroes.
             for reference in videoReferences {
                 let video = getVideoByID(reference: reference.documentID)
@@ -152,6 +153,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
                     continue
                 }
                 defaultPodcast.pod_videos.append(video!)
+                
             }
         }
         

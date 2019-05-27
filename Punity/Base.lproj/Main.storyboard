@@ -50,7 +50,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uJR-kX-2MB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1247" y="274"/>
+            <point key="canvasLocation" x="1818" y="290"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3j3-ky-RgJ">
@@ -63,7 +63,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Ktb-Fk-lx6" kind="relationship" relationship="rootViewController" id="Nun-Ry-FuD"/>
+                        <segue destination="Ktb-Fk-lx6" kind="relationship" relationship="rootViewController" id="i3c-xJ-5Fc"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uWX-JW-ssD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -161,7 +161,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IuY-7w-s4M" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2204" y="1188"/>
+            <point key="canvasLocation" x="1961" y="1081"/>
         </scene>
         <!--AV Player View Controller-->
         <scene sceneID="Smp-bl-Qnf">
@@ -212,7 +212,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jVk-Dz-5QU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1960.8" y="273.91304347826087"/>
+            <point key="canvasLocation" x="1190" y="274"/>
         </scene>
     </scenes>
 </document>

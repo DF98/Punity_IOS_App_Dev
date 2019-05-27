@@ -7,18 +7,44 @@
 //
 
 import UIKit
+import AVFoundation
 import AVKit
-import FirebaseFirestore
+
 
 class VideoViewController: UIViewController {
-    var audioPlayer: AVAudioPlayer?
+    //var player: AVAudioPlayer?
+   
     
     @IBOutlet weak var testLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
         
         
+        
+ 
+        let videoURL = URL(string: "https://audioboom.com/posts/7243055.mp3")
+        let player = AVPlayer(url: videoURL!)
+        
+        //fulscreen mode
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        self.present(playerViewController, animated: true) {
+            playerViewController.player!.play()
+        }
+        
+        /*
+         Sub View Code
+        let playerLayer = AVPlayerLayer(player: player)
+        playerLayer.frame = self.view.bounds
+        self.view.layer.addSublayer(playerLayer)
+        player.volume = 1.0
+        player.play()
+        */
+    
+        //code from: https://stackoverflow.com/questions/25932570/how-to-play-video-with-avplayerviewcontroller-avkit-in-swift
+    
         
         
         // Do any additional setup after loading the view.

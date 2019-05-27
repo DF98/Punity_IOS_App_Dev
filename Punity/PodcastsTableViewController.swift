@@ -13,6 +13,9 @@ import UIKit
 class PodcastsTableViewController: UITableViewController, UISearchResultsUpdating, DatabaseListener{
     func onPodcastChange(change: DatabaseChange, podcastVideos: [Video]) {
         
+        podcastVids = podcastVideos
+        
+        tableView.reloadData()
     }
     
     func onUserListChange(change: DatabaseChange, users: [User]) {
@@ -33,6 +36,7 @@ let SECTION_COUNT = 1;
 let CELL_PODCAST = "podcastCell"
 let CELL_COUNT = "totalPodcastsCell"
     
+var podcastVids: [Video] = []
 var allPodcasts: [Podcast] = []
 var filteredPodcasts: [Podcast] = []
 weak var podcastDelegate: AddPodcastDelegate?
@@ -88,7 +92,8 @@ weak var databaseController: DatabaseProtocol?
         databaseController?.removeListener(listener: self)
     }
 
-     var listenerType = ListenerType.podcasts
+ 
+ var listenerType = ListenerType.podcasts
     
  func onPodcastListChange(change: DatabaseChange, podcasts: [Podcast])
  {
@@ -119,7 +124,7 @@ weak var databaseController: DatabaseProtocol?
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return allPodcasts.count
+        return podcastVids.count
     }
     
     
@@ -127,10 +132,13 @@ weak var databaseController: DatabaseProtocol?
         
         let cell = tableView.dequeueReusableCell(withIdentifier: PODCAST_CELL, for: indexPath) as! PodcastTableViewCell
         
-        let podcast = allPodcasts[indexPath.row]
+        let podcast = podcastVids[indexPath.row]
         
-        cell.backgroundColor = UIColor.green
-        cell.titleLabel.text = podcast.pod_name
+        
+        
+        cell.titleLabel.text = podcast.video_title
+        
+        
 
         return cell
     }
