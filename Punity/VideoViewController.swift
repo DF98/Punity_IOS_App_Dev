@@ -9,23 +9,29 @@
 import UIKit
 import AVFoundation
 import AVKit
+import Alamofire
+import AlamofireRSSParser
 
-
-class VideoViewController: UIViewController {
+class VideoViewController: UIViewController  {
     //var player: AVAudioPlayer?
    
     
     @IBOutlet weak var testLabel: UILabel!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     
         
+    
         
-        
- 
-        let videoURL = URL(string: "https://audioboom.com/posts/7243055.mp3")
+        let videoURL = URL(string: "http://traffic.libsyn.com/joeroganexp/p1307.mp3?dest-id=19997")
         let player = AVPlayer(url: videoURL!)
+        
+        //sourced from https://www.iosapptemplates.com/blog/swift-programming/implement-rss-feed-parser-swift
+        RSSParser.getRSSFeedResponse(path: "http://joeroganexp.joerogan.libsynpro.com/rss") { (rssFeed: RSSFeed?, status: NetworkResponseStatus) in
+            print(rssFeed) // it will be nil if status == .error
+        }
+        
+        
         
         //fulscreen mode
         let playerViewController = AVPlayerViewController()

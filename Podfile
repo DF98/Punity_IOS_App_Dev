@@ -10,4 +10,7 @@ target 'Punity' do
   pod 'Firebase/Auth'
   pod 'Firebase/Core'
   pod 'Firebase/Firestore'
+  pod "SwiftyXMLParser", :git => 'https://github.com/yahoojapan/SwiftyXMLParser.git'
+  pod 'Alamofire', '~> 4.8.2'
+  pod "AlamofireRSSParser"
 end

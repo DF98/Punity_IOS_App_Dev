@@ -11,7 +11,8 @@ import UIKit
 
 
 class PodcastsTableViewController: UITableViewController, UISearchResultsUpdating, DatabaseListener{
-    func onPodcastChange(change: DatabaseChange, podcastVideos: [Video]) {
+    
+    func onPodcastVideosChange(change: DatabaseChange, podcastVideos: [Video]) {
         
         podcastVids = podcastVideos
         
@@ -25,10 +26,16 @@ class PodcastsTableViewController: UITableViewController, UISearchResultsUpdatin
     func onVideoListChange(change: DatabaseChange, videos: [Video]) {
         
     }
+    func onPodcastListChange(change: DatabaseChange, podcasts: [Podcast])
+    {
+        allPodcasts = podcasts
+        updateSearchResults(for: navigationItem.searchController!)
+        tableView.reloadData()
+    }
     
 
     
-let XML_URL = "http://joeroganexp.joerogan.libsynpro.com/rss"
+
 let PODCAST_CELL = "podcastCell"
 
 let SECTION_PODCAST = 0;
@@ -95,11 +102,7 @@ weak var databaseController: DatabaseProtocol?
  
  var listenerType = ListenerType.podcasts
     
- func onPodcastListChange(change: DatabaseChange, podcasts: [Podcast])
- {
-    allPodcasts = podcasts
-    updateSearchResults(for: navigationItem.searchController!)
-}
+
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text?.lowercased(),
@@ -124,7 +127,7 @@ weak var databaseController: DatabaseProtocol?
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return podcastVids.count
+        return allPodcasts.count
     }
     
     
@@ -132,14 +135,12 @@ weak var databaseController: DatabaseProtocol?
         
         let cell = tableView.dequeueReusableCell(withIdentifier: PODCAST_CELL, for: indexPath) as! PodcastTableViewCell
         
-        let podcast = podcastVids[indexPath.row]
+        //let podcast = podcastVids[indexPath.row]
+        let podcasts = filteredPodcasts[indexPath.row]
         
+        //cell.titleLabel.text = podcast.video_title
+        cell.titleLabel.text = podcasts.pod_name
         
-        
-        cell.titleLabel.text = podcast.video_title
-        
-        
-
         return cell
     }
     

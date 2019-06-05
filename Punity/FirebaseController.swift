@@ -80,6 +80,14 @@ class FirebaseController: NSObject, DatabaseProtocol {
         }
         
         podcastsRef = database.collection("podcasts")
+        podcastsRef?.addSnapshotListener { querySnapshot, error in
+            guard (querySnapshot?.documents) != nil else {
+                print("Error fetching documents: \(error!)")
+                return
+            }
+            self.parsePodcastSnapshot(snapshot: querySnapshot!)
+        }
+        /*
         podcastsRef?.whereField("pod_name", isEqualTo: DEFAULT_PODCAST_NAME).addSnapshotListener { querySnapshot,
             error in
             guard let documents = querySnapshot?.documents else {
@@ -87,7 +95,8 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 return
             }
             self.parsePodcastSnapshot(snapshot: documents.first!)
-        }
+ */
+        
         
         
         /*
@@ -137,136 +146,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
  */
     }
     
-//***********************************  PODCAST  *********************************************
-    
-    func parsePodcastSnapshot(snapshot: QueryDocumentSnapshot) {
-        defaultPodcast = Podcast()
-        print(snapshot)
-        defaultPodcast.pod_name = (snapshot.data()["pod_name"] as! String)
-        defaultPodcast.pod_id = snapshot.documentID
-        
-        if let videoReferences = snapshot.data()["pod_videos"] as? [DocumentReference] {
-            // If the document has a "heroes" field, add heroes.
-            for reference in videoReferences {
-                let video = getVideoByID(reference: reference.documentID)
-                guard video != nil else {
-                    continue
-                }
-                defaultPodcast.pod_videos.append(video!)
-                
-            }
-        }
-        
-        listeners.invoke { (listener) in
-            if listener.listenerType == ListenerType.podcasts || listener.listenerType == ListenerType.all {
-                listener.onPodcastChange(change: .update, podcastVideos: defaultPodcast.pod_videos)
-            }
-        }
-        
-    }
-    
-    func onPodcastListChange(change: DatabaseChange, podcasts: [Podcast]) {
-        
-    }
-    
-    
-    
-    
-    /*
-    func parsePodcastsSnapshot(snapshot: QuerySnapshot)
-    {
-        snapshot.documentChanges.forEach { change in
-            let documentRef = change.document.documentID
-            let pod_name = change.document.data()["pod_name"] as! String
-            let videos = change.document.data()["videos"] as! [Video]
-            print(documentRef)
-            
-            if change.type == .added {
-                print("New Podcast: \(change.document.data())")
-                let newPodcast = Podcast()
-                newPodcast.pod_name = pod_name
-                newPodcast.pod_videos = videos
-                newPodcast.pod_id = documentRef
-                
-                podcastList.append(newPodcast)
-            }
-            if change.type == .modified {
-                print("Updated Podcast: \(change.document.data())")
-                
-                let index = getPodcastIndexByID(reference: documentRef)!
-                podcastList[index].pod_name = pod_name
-                podcastList[index].pod_videos = videos
-                podcastList[index].pod_id = documentRef
-            }
-            if change.type == .removed {
-                print("Removed Podcast: \(change.document.data())")
-                if let index = getPodcastIndexByID(reference: documentRef) {
-                    podcastList.remove(at: index)
-                }
-            }
-        }
-        
-        listeners.invoke { (listener) in
-            if listener.listenerType == ListenerType.podcasts || listener.listenerType == ListenerType.all {
-                listener.onPodcastListChange(change: .update, podcasts: podcastList)
-            }
-        }
-    }
-    */
-    
-    func getPodcastIndexByID(reference: String) -> Int?
-    {
-        for podcast in podcastList
-        {
-            if(podcast.pod_id == reference)
-            {
-                //this line throws an error
-                //return podcastList.firstIndex(of: podcast)
-            }
-        }
-        
-        return nil
-    }
-    
-    func addPodcast(name: String, videos: [Video]) -> Podcast
-    {
-        let podcast = Podcast()
-        let id = podcastsRef?.addDocument(data: ["pod_name": name, "pod_videos": videos])
-        
-        podcast.pod_name = name
-        //podcast.pod_videos = videos
-        podcast.pod_id = id!.documentID
-        
-        return podcast
-    }
-    
-    func deletePodcast(podcast: Podcast) {
-        podcastsRef?.document(podcast.pod_id).delete()
-    }
-    
-    func addVideoToPodcast(video: Video, podcast: Podcast) ->Bool
-    {
-        guard let video = getVideoByID(reference: video.video_id), podcast.pod_videos.count < 6 else
-        {
-            return false
-        }
-        podcast.pod_videos.append(video)
-        
-        let newVideoRef = videosRef!.document(video.video_id)
-        podcastsRef?.document(podcast.pod_id).updateData(["pod_videos" : FieldValue.arrayUnion([newVideoRef])])
-        return true
-    }
-    
-    func removeVideoFromPodcast(video: Video, podcast: Podcast)
-    {
-        let index = podcast.pod_videos.index(of: video)
-        let removedVideo = podcast.pod_videos.remove(at: index!)
-        let removedRef = podcastsRef?.document(removedVideo.video_id)
-        
-        podcastsRef?.document(podcast.pod_id).updateData(["pod_videos": FieldValue.arrayRemove([removedRef!])])
-    }
-    
-//*****************************************************************************************
+
     
 
     
@@ -373,6 +253,223 @@ class FirebaseController: NSObject, DatabaseProtocol {
         videosRef?.document(video.video_id).delete()
     }
    
+//*****************************************************************************************
+    
+
+    //***********************************  PODCAST  *********************************************
+    
+    func getPodcastIndexByID(reference: String) -> Int?
+    {
+        for podcast in podcastList
+        {
+            if(podcast.pod_id == reference)
+            {
+                //this line throws an error
+                //return podcastList.firstIndex(of: podcast)
+            }
+        }
+        
+        return nil
+    }
+    
+    
+    func parsePodcastSnapshot(snapshot: QuerySnapshot)
+    {
+       
+    
+            
+        snapshot.documentChanges.forEach { change in
+            let documentRef = change.document.documentID
+            let name = change.document.data()["pod_name"] as! String
+            let rssLink = change.document.data()["rss_link"] as! String
+            var podcastVideos = [Video]()
+            
+            podcastsRef?.whereField("pod_name", isEqualTo: name).addSnapshotListener { querySnapshot,
+                error in
+                guard let documents = querySnapshot?.documents else {
+                    print("Error fetching podcast: \(error!)")
+                    return
+                }
+                let documentSnaphot = documents.first!
+                //self.parsePodcastSnapshot(snapshot: documents.first!)
+                
+                
+                if let videoReferences = documentSnaphot.data()["pod_videos"] as? [DocumentReference] {
+                    // If the document has a "heroes" field, add heroes.
+                    for reference in videoReferences {
+                        let video = self.getVideoByID(reference: reference.documentID)
+                        guard video != nil else {
+                            continue
+                        }
+                        podcastVideos.append(video!)
+                        
+                    }
+                }
+            }
+            
+            
+                    print(documentRef)
+            
+            
+                    
+                    if change.type == .added {
+                        print("New Podcast: \(change.document.data())")
+                        let newPodcast = Podcast()
+                        newPodcast.pod_id = documentRef
+                        newPodcast.rss_link = rssLink
+                        newPodcast.pod_name = name
+                        newPodcast.pod_videos = podcastVideos
+                        
+                        //get all of the videos in the podcast
+                        
+                        
+                        
+                        self.podcastList.append(newPodcast)
+                    }
+                    if change.type == .modified {
+                        print("Updated Podcast: \(change.document.data())")
+                        
+                        let index = getPodcastIndexByID(reference: documentRef)!
+                        podcastList[index].rss_link = rssLink
+                        podcastList[index].pod_name = name
+                        
+                        podcastList[index].pod_id = documentRef
+                        
+                    }
+                    if change.type == .removed {
+                        print("Removed Podcast: \(change.document.data())")
+                        if let index = getVideoIndexByID(reference: documentRef) {
+                            podcastList.remove(at: index)
+                        }
+                    }
+                }
+                
+                listeners.invoke { (listener) in
+                    if listener.listenerType == ListenerType.podcasts || listener.listenerType == ListenerType.all {
+                        listener.onPodcastListChange(change: .update, podcasts: podcastList)
+                    }
+                }
+            }
+            
+            /*
+             func parsePodcastSnapshot(snapshot: QueryDocumentSnapshot) {
+             
+             defaultPodcast = Podcast()
+             print(snapshot)
+             defaultPodcast.pod_name = (snapshot.data()["pod_name"] as! String)
+             defaultPodcast.pod_id = snapshot.documentID
+             
+             if let videoReferences = snapshot.data()["pod_videos"] as? [DocumentReference] {
+             // If the document has a "heroes" field, add heroes.
+             for reference in videoReferences {
+             let video = getVideoByID(reference: reference.documentID)
+             guard video != nil else {
+             continue
+             }
+             defaultPodcast.pod_videos.append(video!)
+             
+             }
+             }
+             
+             listeners.invoke { (listener) in
+             if listener.listenerType == ListenerType.podcasts || listener.listenerType == ListenerType.all {
+             listener.onPodcastVideosChange(change: .update, podcastVideos: defaultPodcast.pod_videos)
+             listener.onPodcastListChange(change: .update, podcasts: podcastList)
+             }
+             }
+             
+             }
+             */
+            /*
+             func onPodcastListChange(change: DatabaseChange, podcasts: [Podcast]) {
+             
+             }
+             */
+            
+            
+            
+            /*
+             func parsePodcastsSnapshot(snapshot: QuerySnapshot)
+             {
+             snapshot.documentChanges.forEach { change in
+             let documentRef = change.document.documentID
+             let pod_name = change.document.data()["pod_name"] as! String
+             let videos = change.document.data()["videos"] as! [Video]
+             print(documentRef)
+             
+             if change.type == .added {
+             print("New Podcast: \(change.document.data())")
+             let newPodcast = Podcast()
+             newPodcast.pod_name = pod_name
+             newPodcast.pod_videos = videos
+             newPodcast.pod_id = documentRef
+             
+             podcastList.append(newPodcast)
+             }
+             if change.type == .modified {
+             print("Updated Podcast: \(change.document.data())")
+             
+             let index = getPodcastIndexByID(reference: documentRef)!
+             podcastList[index].pod_name = pod_name
+             podcastList[index].pod_videos = videos
+             podcastList[index].pod_id = documentRef
+             }
+             if change.type == .removed {
+             print("Removed Podcast: \(change.document.data())")
+             if let index = getPodcastIndexByID(reference: documentRef) {
+             podcastList.remove(at: index)
+             }
+             }
+             }
+             
+             listeners.invoke { (listener) in
+             if listener.listenerType == ListenerType.podcasts || listener.listenerType == ListenerType.all {
+             listener.onPodcastListChange(change: .update, podcasts: podcastList)
+             }
+             }
+             }
+             */
+            
+          
+            
+            func addPodcast(name: String, videos: [Video]) -> Podcast
+            {
+                let podcast = Podcast()
+                let id = podcastsRef?.addDocument(data: ["pod_name": name, "pod_videos": videos])
+                
+                podcast.pod_name = name
+                //podcast.pod_videos = videos
+                podcast.pod_id = id!.documentID
+                
+                return podcast
+            }
+            
+            func deletePodcast(podcast: Podcast) {
+                podcastsRef?.document(podcast.pod_id).delete()
+            }
+            
+            func addVideoToPodcast(video: Video, podcast: Podcast) ->Bool
+            {
+                guard let video = getVideoByID(reference: video.video_id), podcast.pod_videos.count < 6 else
+                {
+                    return false
+                }
+                podcast.pod_videos.append(video)
+                
+                let newVideoRef = videosRef!.document(video.video_id)
+                podcastsRef?.document(podcast.pod_id).updateData(["pod_videos" : FieldValue.arrayUnion([newVideoRef])])
+                return true
+            }
+            
+            func removeVideoFromPodcast(video: Video, podcast: Podcast)
+            {
+                let index = podcast.pod_videos.index(of: video)
+                let removedVideo = podcast.pod_videos.remove(at: index!)
+                let removedRef = podcastsRef?.document(removedVideo.video_id)
+                
+                podcastsRef?.document(podcast.pod_id).updateData(["pod_videos": FieldValue.arrayRemove([removedRef!])])
+            }
+            
 //*****************************************************************************************
     
     
@@ -535,8 +632,8 @@ class FirebaseController: NSObject, DatabaseProtocol {
     func addListener(listener: DatabaseListener) {
         listeners.addDelegate(listener)
         
-        if listener.listenerType == ListenerType.podcasts || listener.listenerType == ListenerType.all {
-            listener.onPodcastChange(change: .update, podcastVideos: defaultPodcast.pod_videos)
+        if listener.listenerType == ListenerType.podcastVideos || listener.listenerType == ListenerType.all {
+            listener.onPodcastVideosChange(change: .update, podcastVideos: defaultPodcast.pod_videos)
         }
         
         if listener.listenerType == ListenerType.users || listener.listenerType == ListenerType.all {
@@ -545,6 +642,9 @@ class FirebaseController: NSObject, DatabaseProtocol {
         
         if listener.listenerType == ListenerType.videos || listener.listenerType == ListenerType.all {
             listener.onVideoListChange(change: .update, videos: videoList)
+        }
+        if listener.listenerType == ListenerType.podcasts || listener.listenerType == ListenerType.all {
+            listener.onPodcastListChange(change: .update, podcasts: podcastList)
         }
     }
     
@@ -557,6 +657,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
  
     
 }
+
 
 
 
