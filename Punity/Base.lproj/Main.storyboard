@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Podcasts Table View Controller-->
+        <!--Podcasts-->
         <scene sceneID="8lF-6S-5w2">
             <objects>
-                <tableViewController id="Ktb-Fk-lx6" customClass="PodcastsTableViewController" customModule="Punity" sceneMemberID="viewController">
+                <tableViewController title="Podcasts" id="Ktb-Fk-lx6" customClass="PodcastsTableViewController" customModule="Punity" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vKb-rs-ZPn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -27,7 +27,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Podcast Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WMS-8M-yID">
-                                            <rect key="frame" x="16" y="11" width="100" height="21"/>
+                                            <rect key="frame" x="16" y="11" width="295" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <accessibility key="accessibilityConfiguration" identifier="titleLabel"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -50,7 +50,46 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uJR-kX-2MB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1190" y="274"/>
+            <point key="canvasLocation" x="359" y="967"/>
+        </scene>
+        <!--Episodes-->
+        <scene sceneID="8AX-84-9h2">
+            <objects>
+                <tableViewController title="Episodes" id="FOE-PP-pWh" customClass="EpisodesTableViewController" customModule="Punity" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="qUI-1J-hBV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="DN1-us-3cb" customClass="EpisodeTableViewCell" customModule="Punity" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DN1-us-3cb" id="rwv-Vu-Xe6">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Episode Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Tc-h3-TQw">
+                                            <rect key="frame" x="27" y="12" width="319" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="titleLabel"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="FOE-PP-pWh" id="bSi-Xb-8T4"/>
+                            <outlet property="delegate" destination="FOE-PP-pWh" id="gdL-z1-yOj"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="jTe-fb-6zh"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ozb-o6-HU9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1162" y="274"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3j3-ky-RgJ">
@@ -63,7 +102,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Ktb-Fk-lx6" kind="relationship" relationship="rootViewController" id="PS2-gz-JRl"/>
+                        <segue destination="FOE-PP-pWh" kind="relationship" relationship="rootViewController" id="UWh-Zc-YTK"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uWX-JW-ssD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -212,7 +251,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jVk-Dz-5QU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2042" y="266"/>
+            <point key="canvasLocation" x="1698" y="-486"/>
         </scene>
     </scenes>
 </document>

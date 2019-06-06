@@ -28,9 +28,26 @@ class VideoViewController: UIViewController  {
         
         //sourced from https://www.iosapptemplates.com/blog/swift-programming/implement-rss-feed-parser-swift
         RSSParser.getRSSFeedResponse(path: "http://joeroganexp.joerogan.libsynpro.com/rss") { (rssFeed: RSSFeed?, status: NetworkResponseStatus) in
-            print(rssFeed) // it will be nil if status == .error
+            
+            for item in (rssFeed?.items)!
+            {
+                print(item.title)
+            }
         }
         
+        /*
+        let url = "http://traffic.libsyn.com/joeroganexp/p1307.mp3?dest-id=19997"
+        
+        Alamofire.request(url).responseRSS() { (response) -> Void in
+            if let feed: RSSFeed = response.result.value
+            {
+                for item in feed.items
+                {
+                    print(item)
+                }
+            }
+        }
+        */
         
         
         //fulscreen mode

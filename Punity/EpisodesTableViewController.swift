@@ -7,9 +7,16 @@
 //
 
 import UIKit
+import Alamofire
+import AlamofireRSSParser
 
 class EpisodesTableViewController: UITableViewController {
-
+    
+    weak var podcast: Podcast?
+    var podcastVids: [Video] = []
+    var numOfRows: Int = 0
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,29 +25,58 @@ class EpisodesTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+    
+        
+        
+        
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        /*
+        let url = "http://joeroganexp.joerogan.libsynpro.com/rss"
+        
+        Alamofire.request(url).responseRSS() { (response) -> Void in
+            if let feed: RSSFeed = response.result.value {
+                self.setNumOfRows(int: feed.items.count)
+                print("Number Of Rows Value inside brackets: \(self.numOfRows)")
+            }
+        }
+        
+        print("Number Of Rows Value: \(self.numOfRows)")
+         */
+        return 10
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        
+        var episodeTitle = ""
 
+        let url = "http://joeroganexp.joerogan.libsynpro.com/rss"
+        
+        RSSParser.getRSSFeedResponse(path: url) { (rssFeed: RSSFeed?, status: NetworkResponseStatus) in
+            
+            
+        }
+                
+        
+    
         // Configure the cell...
-
+        cell.textLabel?.text = episodeTitle
+        
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -86,5 +122,11 @@ class EpisodesTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
+    func setNumOfRows (int: Int)
+    {
+        numOfRows = int
+    }
 
 }

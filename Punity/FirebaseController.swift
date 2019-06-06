@@ -166,7 +166,9 @@ class FirebaseController: NSObject, DatabaseProtocol {
             
             if change.type == .added {
                 print("New Video: \(change.document.data())")
+                
                 let newVideo = Video()
+                
                 newVideo.video_title = title
                 newVideo.video_pubdate = pub_date
                 newVideo.video_comments = comments
@@ -176,7 +178,10 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 newVideo.video_link = link
                 newVideo.video_id = documentRef
                 
+               
+                /*
                 videoList.append(newVideo)
+                 */
             }
             if change.type == .modified {
                 print("Updated Video: \(change.document.data())")
@@ -282,7 +287,8 @@ class FirebaseController: NSObject, DatabaseProtocol {
             let documentRef = change.document.documentID
             let name = change.document.data()["pod_name"] as! String
             let rssLink = change.document.data()["rss_link"] as! String
-            var podcastVideos = [Video]()
+            
+            
             
             podcastsRef?.whereField("pod_name", isEqualTo: name).addSnapshotListener { querySnapshot,
                 error in
@@ -301,11 +307,11 @@ class FirebaseController: NSObject, DatabaseProtocol {
                         guard video != nil else {
                             continue
                         }
-                        podcastVideos.append(video!)
-                        
+                        //podcastVideos.append(video!)
                     }
                 }
             }
+            
             
             
                     print(documentRef)
@@ -318,7 +324,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
                         newPodcast.pod_id = documentRef
                         newPodcast.rss_link = rssLink
                         newPodcast.pod_name = name
-                        newPodcast.pod_videos = podcastVideos
+                        //newPodcast.pod_videos = podcastVideos
                         
                         //get all of the videos in the podcast
                         
