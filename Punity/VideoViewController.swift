@@ -15,56 +15,40 @@ import AlamofireRSSParser
 class VideoViewController: UIViewController  {
     //var player: AVAudioPlayer?
    
+    var video: Video?
+
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var descriptionTextView: UITextView!
     
-    @IBOutlet weak var testLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        
+        titleLabel.text = video?.video_title
+        descriptionTextView.text = video?.video_desc
     
         
-        let videoURL = URL(string: "http://traffic.libsyn.com/joeroganexp/p1307.mp3?dest-id=19997")
+        let videoURL = URL(string: video!.video_link)
+        
         let player = AVPlayer(url: videoURL!)
         
-        //sourced from https://www.iosapptemplates.com/blog/swift-programming/implement-rss-feed-parser-swift
-        RSSParser.getRSSFeedResponse(path: "http://joeroganexp.joerogan.libsynpro.com/rss") { (rssFeed: RSSFeed?, status: NetworkResponseStatus) in
-            
-            for item in (rssFeed?.items)!
-            {
-                print(item.title)
-            }
-        }
         
         /*
-        let url = "http://traffic.libsyn.com/joeroganexp/p1307.mp3?dest-id=19997"
-        
-        Alamofire.request(url).responseRSS() { (response) -> Void in
-            if let feed: RSSFeed = response.result.value
-            {
-                for item in feed.items
-                {
-                    print(item)
-                }
-            }
-        }
-        */
-        
-        
         //fulscreen mode
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
         self.present(playerViewController, animated: true) {
             playerViewController.player!.play()
         }
+         */
         
-        /*
-         Sub View Code
+        
+         //Sub View Code
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = self.view.bounds
         self.view.layer.addSublayer(playerLayer)
         player.volume = 1.0
         player.play()
-        */
+        
     
         //code from: https://stackoverflow.com/questions/25932570/how-to-play-video-with-avplayerviewcontroller-avkit-in-swift
     

@@ -9,7 +9,10 @@
 import UIKit
 
 class EpisodeTableViewCell: UITableViewCell {
-
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var tumbImgView: UIImageView!
+    @IBOutlet weak var durationLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
