@@ -99,7 +99,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
         
         
         
-        /*
+        
         //SETTING UP THE USERS LISTENER
         usersRef = database.collection("users")
         usersRef?.addSnapshotListener { querySnapshot, error in
@@ -107,9 +107,9 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 print("Error fetching documents: \(error!)")
                 return
             }
-            //self.parseUsersSnapshot(snapshot: querySnapshot!)
+            self.parseUsersSnapshot(snapshot: querySnapshot!)
         }
-        
+        /*
         //SETTING UP THE PODCASTS LISTENER
         podcastsRef = database.collection("podcasts")
         podcastsRef?.addSnapshotListener { querySnapshot,
@@ -147,8 +147,103 @@ class FirebaseController: NSObject, DatabaseProtocol {
     }
     
 
+    func parseUsersSnapshot (snapshot: QuerySnapshot)
+    {
+        snapshot.documentChanges.forEach { change in
+            let documentRef = change.document.documentID
+            let user_name = change.document.data()["username"] as! String
+            let password = change.document.data()["username"] as! String
+            let email = change.document.data()["email"] as! String
+            let dob = change.document.data()["dob"] as! Timestamp
+            
+            if change.type == .added
+            {
+                print("New User: \(change.document.data())")
+                
+                let newUser = User()
+                
+                newUser.username = user_name
+                newUser.email = email
+                newUser.password = password
+                newUser.dob = dob
+            }
+            
+            if change.type == .modified
+            {
+                print("Updated User: \(change.document.data())")
+                let index = getUserIndexByID(reference: documentRef)!
+                
+                userList[index].userID = documentRef
+                userList[index].email = email
+                userList[index].dob = dob
+                userList[index].password = password
+                userList[index].username = user_name
+            }
+            
+            if change.type == .removed
+            {
+                
+                print("Removed Video: \(change.document.data())")
+                if let index = getUserIndexByID(reference: documentRef) {
+                    userList.remove(at: index)
+                }
+                
+            }
+            
+            listeners.invoke { (listener) in
+                if listener.listenerType == ListenerType.users || listener.listenerType == ListenerType.all {
+                    listener.onUserListChange(change: .update, users: userList)
+                }
+            }
+            
+        }
+        
+    }
     
+    func getUserIndexByID(reference: String) -> Int?
+    {
+        for user in userList
+        {
+            if(user.userID == reference)
+            {
+                //this line throws an error
+                return userList.index(of: user)
+            }
+        }
+        
+        return nil
+    }
+    
+    func getUserByID(reference: String) ->User?
+    {
+        for user in userList
+        {
+            if(user.userID == reference)
+            {
+                return user
+            }
+        }
+        return nil
+    }
+    
+    func addUser(username: String, password: String, dob: Timestamp, email: String) -> User
+    {
+        let user = User()
+        
+        let id = usersRef?.addDocument(data: ["dob": dob, "email": email,"password": password ,"username": username])
+        
+        user.password = password
+        user.username = username
+        user.dob = dob
+        user.email = email
+        
+        return user
+    }
 
+    func deleteUser(user: User)
+    {
+        usersRef?.document(user.userID).delete()
+    }
     
 //***********************************  VIDEO  *********************************************
     func parseVideosSnapshot(snapshot: QuerySnapshot)
@@ -478,163 +573,7 @@ class FirebaseController: NSObject, DatabaseProtocol {
             
 //*****************************************************************************************
     
-    
-    
-   /*
-    func parseUsersSnapshot(snapshot: QuerySnapshot) {
-        snapshot.documentChanges.forEach { change in
-            
-            //----setting up variables for each field in 'users'
-            let documentRef = change.document.documentID
-            let username = change.document.data()["username"] as! String
-            let password = change.document.data()["password"] as! String
-            let email = change.document.data()["email"] as! String
-            let dob = change.document.data()["dob"] as! Date
-            let country = change.document.data()["country"] as! String
-            
-            print(documentRef)
-            
-            if change.type == .added {
-                print("New Hero: \(change.document.data())")
-                let newUser = User()
-                newUser.username = username
-                newUser.password = password
-                newUser.email = email
-                newUser.dob = dob
-                newUser.country = country
-                newUser.id = documentRef
-                userList.append(newUser)
-            }
-            if change.type == .modified {
-                print("Updated Hero: \(change.document.data())")
-                let index = getUserIndexByID(reference: documentRef)!
-                userList[index].username = username
-                userList[index].password = password
-                userList[index].id = documentRef
-            }
-            if change.type == .removed {
-                print("Removed Hero: \(change.document.data())")
-                if let index = getUserIndexByID(reference: documentRef) {
-                    userList.remove(at: index)
-                }
-            }
-        }
-        
-        listeners.invoke { (listener) in
-            if listener.listenerType == ListenerType.users || listener.listenerType == ListenerType.all {
-                listener.onHeroListChange(change: .update, users: userList)
-            }
-        }
-    }
- */
-    
-/*
-    func parseTeamSnapshot(snapshot: QueryDocumentSnapshot) {
-        defaultTeam = Team()
-        defaultTeam.name = (snapshot.data()["name"] as! String)
-        defaultTeam.id = snapshot.documentID
-        if let heroReferences = snapshot.data()["heroes"] as? [DocumentReference] {
-            // If the document has a "heroes" field, add heroes.
-            for reference in heroReferences {
-                let hero = getHeroByID(reference: reference.documentID)
-                guard hero != nil else {
-                    continue
-                }
-                defaultTeam.heroes.append(hero!)
-            }
-        }
-        
-        listeners.invoke { (listener) in
-            if listener.listenerType == ListenerType.team || listener.listenerType == ListenerType.all {
-                listener.onTeamChange(change: .update, teamHeroes: defaultTeam.heroes)
-            }
-        }
-        
-    }
-    
-    func getUserIndexByID(reference: String) -> Int? {
-        for user in userList {
-            if(hero.id == reference) {
-                return heroList.firstIndex(of: hero)
-            }
-        }
-        
-        return nil
-    }
-    
-    func getHeroByID(reference: String) -> SuperHero? {
-        for hero in heroList {
-            if(hero.id == reference) {
-                return hero
-            }
-        }
-        
-        return nil
-    }
-    
-    func addSuperHero(name: String, abilities: String) -> SuperHero {
-        let hero = SuperHero()
-        let id = heroesRef?.addDocument(data: ["name" : name, "abilities" : abilities])
-        hero.name = name
-        hero.abilities = abilities
-        hero.id = id!.documentID
-        
-        return hero
-    }
-    
-    func addTeam(teamName: String) -> Team {
-        let team = Team()
-        let id = teamsRef?.addDocument(data: ["name" : teamName, "heroes": []])
-        team.id = id!.documentID
-        team.name = teamName
-        
-        return team
-    }
-    
-    func addHeroToTeam(hero: SuperHero, team: Team) -> Bool {
-        guard let hero = getHeroByID(reference: hero.id), team.heroes.count < 6 else {
-            return false
-        }
-        
-        team.heroes.append(hero)
-        
-        let newHeroRef = heroesRef!.document(hero.id)
-        teamsRef?.document(team.id).updateData(["heroes" : FieldValue.arrayUnion([newHeroRef])])
-        return true
-    }
-    
-    func deleteSuperHero(hero: SuperHero) {
-        heroesRef?.document(hero.id).delete()
-    }
-    
-    func deleteTeam(team: Team) {
-        teamsRef?.document(team.id).delete()
-    }
-    
-    func removeHeroFromTeam(hero: SuperHero, team: Team) {
-        let index = team.heroes.index(of: hero)
-        let removedHero = team.heroes.remove(at: index!)
-        let removedRef = heroesRef?.document(removedHero.id)
-        
-        teamsRef?.document(team.id).updateData(["heroes": FieldValue.arrayRemove([removedRef!])])
-    }
-    
-    func addListener(listener: DatabaseListener) {
-        listeners.addDelegate(listener)
-        
-        if listener.listenerType == ListenerType.team || listener.listenerType == ListenerType.all {
-            listener.onTeamChange(change: .update, teamHeroes: defaultTeam.heroes)
-        }
-        
-        if listener.listenerType == ListenerType.heroes || listener.listenerType == ListenerType.all {
-            listener.onHeroListChange(change: .update, heroes: heroList)
-        }
-    }
-    
-    func removeListener(listener: DatabaseListener) {
-        listeners.removeDelegate(listener)
-    }
- */
+
     func addListener(listener: DatabaseListener) {
         listeners.addDelegate(listener)
         

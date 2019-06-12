@@ -27,16 +27,15 @@ class EpisodesTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        RSSParser.getRSSFeedResponse(path: "http://joeroganexp.joerogan.libsynpro.com/rss") { (rssFeed: RSSFeed?, status: NetworkResponseStatus) in
-            for item in rssFeed!.items{
+        let path = podcast?.rss_link
+        RSSParser.getRSSFeedResponse(path: path!) { (rssFeed: RSSFeed?, status: NetworkResponseStatus) in
+            for (item, element) in rssFeed!.items.enumerated(){
                let newVideo = Video()
-                newVideo.video_title = item.title!
-                newVideo.video_link = item.link!
-                newVideo.video_desc = item.itemDescription!
+                newVideo.video_title = element.title!
+                newVideo.video_link = element.link!
+                newVideo.video_desc = element.itemDescription!
                 
-                
-                
-                self.podcastVids.append(newVideo)
+                self.podcastVids.append(newVideo) 
                 
             }
             self.tableView.reloadData()

@@ -39,6 +39,10 @@ protocol DatabaseProtocol: AnyObject {
     func deleteUser(user: User)
      */
     
+    //--USERS--
+    func addUser(username: String, password: String, dob: Timestamp, email: String) -> User
+    func deleteUser(user: User)
+    
     //--PODCASTS--
     func addPodcast(name: String, videos: [Video]) -> Podcast
     func deletePodcast(podcast: Podcast)

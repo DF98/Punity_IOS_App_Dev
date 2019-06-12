@@ -7,35 +7,36 @@
 //
 
 import Foundation
+import Firebase
 
 class User: NSObject
 {
-    var userID: Int
+    var userID: String
     var username: String
     var password: String
     var email: String
-    var dob: Date
-    var country: String
+    var dob: Timestamp
+    
     
     
     override init()
     {
-        self.userID = 0
+        self.userID = ""
         self.username = ""
         self.password = ""
         self.email = ""
-        self.dob = Date()
-        self.country = ""
+        self.dob = Timestamp()
+        
     }
  
     
-    init(id: Int, username:String, password:String, email:String, dob: Date, country: String)
+    init(id: String, username:String, password:String, email:String, dob: Timestamp)
     {
         self.userID = id
         self.username = username
         self.password = password
         self.email = email
         self.dob = dob
-        self.country = country
+        
     }
 }
