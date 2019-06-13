@@ -12,6 +12,9 @@ class ProfileViewController: UIViewController, DatabaseListener {
     var listenerType = ListenerType.users
     
     var users: [User] = []
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var passwordLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
     
     func onPodcastVideosChange(change: DatabaseChange, podcastVideos: [Video]) {
         
@@ -19,6 +22,7 @@ class ProfileViewController: UIViewController, DatabaseListener {
     
     func onUserListChange(change: DatabaseChange, users: [User]) {
         self.users = users
+        viewDidLoad()
     }
     
     func onVideoListChange(change: DatabaseChange, videos: [Video]) {
@@ -33,9 +37,7 @@ class ProfileViewController: UIViewController, DatabaseListener {
     weak var databaseController: DatabaseProtocol?
     
     
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var passwordLabel: UILabel!
-    @IBOutlet weak var emailLabel: UILabel!
+    
     
     var user: User?
     override func viewDidLoad() {
@@ -44,9 +46,16 @@ class ProfileViewController: UIViewController, DatabaseListener {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         databaseController = appDelegate.databaseController
         
-         nameLabel.text = users[0].username
+        if (users.count > 0)
+        {
+        nameLabel.text = users[0].username
         passwordLabel.text = users[0].password
         emailLabel.text = users[0].email
+        }
+        else
+        {
+            print("there are no users in the array")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

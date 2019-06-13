@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         databaseController = appDelegate.databaseController
-        test_lbl.text = databaseController?.getVideoByID(reference:"3t3bbtblaZquX4o5cud0")?.video_title
+        //empttest_lbl.text = databaseController?.getVideoByID(reference:"3t3bbtblaZquX4o5cud0")?.video_title
        
     }
     

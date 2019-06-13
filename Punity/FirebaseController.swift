@@ -47,7 +47,6 @@ class FirebaseController: NSObject, DatabaseProtocol {
         authController = Auth.auth()
         database = Firestore.firestore()
         userList = [User]()
-        //defaultTeam = Team()
         podcastList = [Podcast]()
         videoList = [Video]()
         commentList = [Comment]()
@@ -152,10 +151,11 @@ class FirebaseController: NSObject, DatabaseProtocol {
         snapshot.documentChanges.forEach { change in
             let documentRef = change.document.documentID
             let user_name = change.document.data()["username"] as! String
-            let password = change.document.data()["username"] as! String
+            let password = change.document.data()["password"] as! String
             let email = change.document.data()["email"] as! String
             let dob = change.document.data()["dob"] as! Timestamp
             
+
             if change.type == .added
             {
                 print("New User: \(change.document.data())")
@@ -166,6 +166,10 @@ class FirebaseController: NSObject, DatabaseProtocol {
                 newUser.email = email
                 newUser.password = password
                 newUser.dob = dob
+                
+                
+                
+                self.userList.append(newUser)
             }
             
             if change.type == .modified
@@ -530,7 +534,16 @@ class FirebaseController: NSObject, DatabaseProtocol {
              }
              }
              */
-            
+    
+    func getPodcastByID(reference: String) -> Podcast? {
+        for podcast in podcastList {
+            if(podcast.pod_id == reference) {
+                return podcast
+            }
+        }
+        
+        return nil
+    }
           
             
             func addPodcast(name: String, videos: [Video]) -> Podcast

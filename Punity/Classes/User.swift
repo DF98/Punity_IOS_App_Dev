@@ -16,7 +16,7 @@ class User: NSObject
     var password: String
     var email: String
     var dob: Timestamp
-    
+    var podcasts: [Podcast]
     
     
     override init()
@@ -26,17 +26,19 @@ class User: NSObject
         self.password = ""
         self.email = ""
         self.dob = Timestamp()
+        self.podcasts = []
         
     }
  
     
-    init(id: String, username:String, password:String, email:String, dob: Timestamp)
+    init(id: String, username:String, password:String, email:String, dob: Timestamp, podcasts: [Podcast])
     {
         self.userID = id
         self.username = username
         self.password = password
         self.email = email
         self.dob = dob
+        self.podcasts = podcasts
         
     }
 }

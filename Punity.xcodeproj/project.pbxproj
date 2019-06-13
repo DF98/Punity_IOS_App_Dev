@@ -21,6 +21,11 @@
 		E099DCD322B0E93C00FE8A11 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E099DCD222B0E93C00FE8A11 /* ProfileViewController.swift */; };
 		E099DCD522B0ED9D00FE8A11 /* AddUserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E099DCD422B0ED9D00FE8A11 /* AddUserDelegate.swift */; };
 		E09F1960229664B900F50DED /* AddVideoDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09F195F229664B900F50DED /* AddVideoDelegate.swift */; };
+		E0A2218D22B1FC9D00889DA4 /* MenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2218C22B1FC9D00889DA4 /* MenuTableViewController.swift */; };
+		E0A2218F22B1FE0800889DA4 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2218E22B1FE0800889DA4 /* MenuTableViewCell.swift */; };
+		E0A2219122B202AD00889DA4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2219022B202AD00889DA4 /* LoginViewController.swift */; };
+		E0A2219322B212B800889DA4 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2219222B212B800889DA4 /* MainViewController.swift */; };
+		E0A2219522B22B1900889DA4 /* YourPodcastsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2219422B22B1900889DA4 /* YourPodcastsTableViewController.swift */; };
 		E0BACEE722A8BE850011FF87 /* EpisodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BACEE622A8BE850011FF87 /* EpisodeTableViewCell.swift */; };
 		E0E27B4322890444005B4F22 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E27B4222890444005B4F22 /* AppDelegate.swift */; };
 		E0E27B4522890444005B4F22 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E27B4422890444005B4F22 /* ViewController.swift */; };
@@ -50,6 +55,11 @@
 		E099DCD222B0E93C00FE8A11 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E099DCD422B0ED9D00FE8A11 /* AddUserDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserDelegate.swift; sourceTree = "<group>"; };
 		E09F195F229664B900F50DED /* AddVideoDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVideoDelegate.swift; sourceTree = "<group>"; };
+		E0A2218C22B1FC9D00889DA4 /* MenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewController.swift; sourceTree = "<group>"; };
+		E0A2218E22B1FE0800889DA4 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
+		E0A2219022B202AD00889DA4 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E0A2219222B212B800889DA4 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		E0A2219422B22B1900889DA4 /* YourPodcastsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourPodcastsTableViewController.swift; sourceTree = "<group>"; };
 		E0BACEE622A8BE850011FF87 /* EpisodeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeTableViewCell.swift; sourceTree = "<group>"; };
 		E0E27B3F22890444005B4F22 /* Punity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Punity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0E27B4222890444005B4F22 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -146,6 +156,11 @@
 				E0BACEE622A8BE850011FF87 /* EpisodeTableViewCell.swift */,
 				E099DCD222B0E93C00FE8A11 /* ProfileViewController.swift */,
 				E099DCD422B0ED9D00FE8A11 /* AddUserDelegate.swift */,
+				E0A2218C22B1FC9D00889DA4 /* MenuTableViewController.swift */,
+				E0A2218E22B1FE0800889DA4 /* MenuTableViewCell.swift */,
+				E0A2219022B202AD00889DA4 /* LoginViewController.swift */,
+				E0A2219222B212B800889DA4 /* MainViewController.swift */,
+				E0A2219422B22B1900889DA4 /* YourPodcastsTableViewController.swift */,
 			);
 			path = Punity;
 			sourceTree = "<group>";
@@ -292,7 +307,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0264D3222927CEB00E9D279 /* DatabaseProtocol.swift in Sources */,
+				E0A2219322B212B800889DA4 /* MainViewController.swift in Sources */,
 				E0E27B59228916F1005B4F22 /* User.swift in Sources */,
+				E0A2218F22B1FE0800889DA4 /* MenuTableViewCell.swift in Sources */,
 				E02DB86F22892D7800040441 /* Video.swift in Sources */,
 				E099DCD522B0ED9D00FE8A11 /* AddUserDelegate.swift in Sources */,
 				E0E27B552289134A005B4F22 /* FirebaseController.swift in Sources */,
@@ -300,9 +317,12 @@
 				E02DB87122892E7E00040441 /* Comment.swift in Sources */,
 				E099DCD322B0E93C00FE8A11 /* ProfileViewController.swift in Sources */,
 				E0E27B4522890444005B4F22 /* ViewController.swift in Sources */,
+				E0A2219122B202AD00889DA4 /* LoginViewController.swift in Sources */,
 				E00FB52522967BE50009BF9A /* AddPodcastDelegate.swift in Sources */,
 				E0E27B4322890444005B4F22 /* AppDelegate.swift in Sources */,
 				E02ACB0022952A1200524E2C /* EpisodesTableViewController.swift in Sources */,
+				E0A2219522B22B1900889DA4 /* YourPodcastsTableViewController.swift in Sources */,
+				E0A2218D22B1FC9D00889DA4 /* MenuTableViewController.swift in Sources */,
 				E0BACEE722A8BE850011FF87 /* EpisodeTableViewCell.swift in Sources */,
 				E05061762297F18E005F1DB2 /* VideoViewController.swift in Sources */,
 				E09F1960229664B900F50DED /* AddVideoDelegate.swift in Sources */,

@@ -50,13 +50,6 @@ weak var podcastDelegate: AddPodcastDelegate?
 weak var databaseController: DatabaseProtocol?
     
     
-
-    
-    
-    
-    
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
