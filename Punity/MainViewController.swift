@@ -17,7 +17,7 @@ class MainViewController: ViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        welcomeLabel.text = "Hi, \(user?.username)"
+        welcomeLabel.text = "Hi, \(user!.username)"
     }
     
 

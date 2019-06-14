@@ -344,7 +344,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Aw7-nl-0Ub">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aw7-nl-0Ub">
                                 <rect key="frame" x="16" y="413" width="343" height="211"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -360,53 +360,53 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lxm-Zn-v85">
-                                <rect key="frame" x="38" y="188" width="133" height="30"/>
+                                <rect key="frame" x="121" y="188" width="133" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Play"/>
                                 <connections>
-                                    <action selector="playButtonPressed:" destination="HfC-UH-yDf" eventType="touchUpInside" id="Kqv-hg-A3c"/>
+                                    <action selector="playButtonPressed:" destination="HfC-UH-yDf" eventType="touchUpInside" id="BZK-R6-20C"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyf-tp-KZN">
-                                <rect key="frame" x="78" y="236" width="42" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Current Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyf-tp-KZN">
+                                <rect key="frame" x="34" y="122" width="101" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Duration" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TOh-UF-K7b">
-                                <rect key="frame" x="144" y="236" width="66" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Dhl-XZ-pCH">
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Dhl-XZ-pCH">
                                 <rect key="frame" x="32" y="151" width="311" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
-                                    <action selector="handlePlayerheadSliderTouchEnd:" destination="HfC-UH-yDf" eventType="touchUpInside" id="H2T-MK-0ng"/>
-                                    <action selector="handlePlayheadSliderTouchBegin:" destination="HfC-UH-yDf" eventType="valueChanged" id="B8d-fh-rb5"/>
-                                    <action selector="handlePlayheadSliderTouchBegin:" destination="HfC-UH-yDf" eventType="touchDown" id="wyK-NR-KXg"/>
+                                    <action selector="handlePlayHeadSliderTouchBegin:" destination="HfC-UH-yDf" eventType="touchDown" id="VZ8-AX-vCq"/>
+                                    <action selector="handlePlayHeadSliderValueChanged:" destination="HfC-UH-yDf" eventType="valueChanged" id="K1a-eR-NCe"/>
+                                    <action selector="handlePlaySliderTouchEnd:" destination="HfC-UH-yDf" eventType="touchUpInside" id="ZTK-um-31i"/>
                                 </connections>
                             </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Duration" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TOh-UF-K7b">
+                                <rect key="frame" x="143" y="121" width="66" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="I0n-1k-Iah"/>
                     </view>
                     <navigationItem key="navigationItem" id="GDz-zY-dHF"/>
                     <connections>
-                        <outlet property="audioSlider" destination="Dhl-XZ-pCH" id="OlB-ND-VBG"/>
-                        <outlet property="currentTimeLabel" destination="fyf-tp-KZN" id="ING-JB-o12"/>
-                        <outlet property="descriptionTextView" destination="Aw7-nl-0Ub" id="3Li-o3-ZlI"/>
-                        <outlet property="durationLabel" destination="TOh-UF-K7b" id="ifS-kP-50T"/>
-                        <outlet property="playButton" destination="lxm-Zn-v85" id="e4q-cO-qn4"/>
-                        <outlet property="titleLabel" destination="xPA-iN-dam" id="VuN-Il-5a2"/>
+                        <outlet property="currentTimeLabel" destination="fyf-tp-KZN" id="XZ8-UJ-eVH"/>
+                        <outlet property="descriptionTextView" destination="Aw7-nl-0Ub" id="QbF-jY-oyT"/>
+                        <outlet property="durationLabel" destination="TOh-UF-K7b" id="qpc-rh-biL"/>
+                        <outlet property="playButton" destination="lxm-Zn-v85" id="9j2-DZ-Yzw"/>
+                        <outlet property="slider" destination="Dhl-XZ-pCH" id="Suu-rW-Wpi"/>
+                        <outlet property="titleLabel" destination="xPA-iN-dam" id="hMO-6p-tEm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jVk-Dz-5QU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2829.5999999999999" y="273.91304347826087"/>
+            <point key="canvasLocation" x="3186" y="274"/>
         </scene>
     </scenes>
 </document>

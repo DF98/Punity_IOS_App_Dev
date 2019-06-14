@@ -30,6 +30,7 @@ class LoginViewController: ViewController, DatabaseListener {
     
     var userList: [User] = []
     var wantedUser = User()
+    var gainedAccess = false
     
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -40,7 +41,8 @@ class LoginViewController: ViewController, DatabaseListener {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        gainedAccess = false
+        
         // Do any additional setup after loading the view.
     }
     
@@ -65,11 +67,11 @@ class LoginViewController: ViewController, DatabaseListener {
                 wantedUser.dob = user.dob
                 wantedUser.userID = user.userID
                 
-                //performSegue(withIdentifier: "login_main_segue", sender: self)
+                gainedAccess = true
             }
             else
             {
-                //performSegue(withIdentifier: "", sender: nil)
+                
             }
         }
         
@@ -95,6 +97,17 @@ class LoginViewController: ViewController, DatabaseListener {
          let desiredScreen = segue.destination as! MainViewController
         // Pass the selected object to the new view controller.
         desiredScreen.user = wantedUser
+    }
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if (gainedAccess == false)
+        {
+            return false
+        }
+        else
+        {
+        return true
+        }
     }
     
 

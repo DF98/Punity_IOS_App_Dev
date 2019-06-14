@@ -11,6 +11,7 @@ import UIKit
 class ProfileViewController: UIViewController, DatabaseListener {
     var listenerType = ListenerType.users
     
+    
     var users: [User] = []
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var passwordLabel: UILabel!
@@ -46,16 +47,19 @@ class ProfileViewController: UIViewController, DatabaseListener {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         databaseController = appDelegate.databaseController
         
-        if (users.count > 0)
+        if (user != nil)
         {
-        nameLabel.text = users[0].username
-        passwordLabel.text = users[0].password
-        emailLabel.text = users[0].email
+        nameLabel.text = user!.username
+        passwordLabel.text = user!.password
+        emailLabel.text = user!.email
         }
         else
         {
-            print("there are no users in the array")
+            nameLabel.text = "username unknown"
+            passwordLabel.text = "password unknown"
+            emailLabel.text = "user email unknown"
         }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

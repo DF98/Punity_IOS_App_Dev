@@ -6,6 +6,8 @@
 //  Copyright © 2019 Monash University. All rights reserved.
 //
 
+//custom audio controls https://stackoverflow.com/questions/43062870/add-custom-controls-to-avplayer-in-swift
+
 import UIKit
 import AVFoundation
 import AVKit
@@ -13,58 +15,23 @@ import Alamofire
 import AlamofireRSSParser
 
 class VideoViewController: UIViewController  {
-    //var player: AVAudioPlayer?
-   
+ 
     var video: Video?
     var player: AVPlayer?
-    //var audioPlayer = AVAudioPlayer()
-    
-    
-    
+    var timer: Timer?
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionTextView: UITextView!
-    @IBOutlet weak var audioSlider: UISlider!
-    @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var durationLabel: UILabel!
+    @IBOutlet weak var currentTimeLabel: UILabel!
     
-    @IBAction func playButtonPressed(_ sender: UIButton) {
-        if sender.isSelected {
-            player!.pause()
-            playButton.setTitle("paused", for: UIControl.State.normal)
-        }
-        else {
-            player!.play()
-            playButton.setTitle("playing", for: UIControl.State.normal)
-        }
-    }
-    
-    
-    //let duration : CMTime = player!.currentItem!.asset.duration
-    //let seconds : Float64 = CMTimeGetSeconds(duration)
-        
-        //durationLabel.text = self.stringFromTimeInterval(interval: seconds)
-        
-        //let duration : CMTime = player!.currentTime()
-        //let seconds : Float64 = CMTimeGetSeconds(duration)
-        
-        //currentTimeLabel.text = self.stringFromTimeInterval(interval: seconds)
-    //}
-    
-    func stringFromTimeInterval(interval: TimeInterval) -> String {
-        
-        let interval = Int(interval)
-        let seconds = interval % 60
-        let minutes = (interval / 60) % 60
-        let hours = (interval / 3600)
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
-
-    
-    
-override func viewDidLoad() {
+    @IBOutlet weak var slider: UISlider!
+    override func viewDidLoad() {
         super.viewDidLoad()
     
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
+        
         titleLabel.text = video?.video_title
         descriptionTextView.text = video?.video_desc
         
@@ -73,6 +40,20 @@ override func viewDidLoad() {
         let videoURL = URL(string: video!.video_link)!
         player = AVPlayer(url: videoURL)
         player?.volume = 1.0
+        
+        let duration : CMTime = (player?.currentItem!.asset.duration)!
+        let seconds : Float64 = CMTimeGetSeconds(duration)
+        
+        slider.maximumValue = Float((player!.currentItem?.asset.duration.seconds)!)
+        print(slider.maximumValue)
+        durationLabel.text = self.stringFromTimeInterval(interval: seconds)
+        
+        let currentTime : CMTime = player!.currentTime()
+        let currentTimeSeconds : Float64 = CMTimeGetSeconds(currentTime)
+        
+        currentTimeLabel.text = self.stringFromTimeInterval(interval: currentTimeSeconds)
+        
+        
         /*
         do {
         try audioPlayer = AVAudioPlayer(contentsOf: videoURL)
@@ -83,17 +64,7 @@ override func viewDidLoad() {
  
         //audioSlider.maximumValue = Float(audioPlayer.duration)
         
-        
-        
-        
-        
-        audioSlider.maximumValue = Float(CMTimeGetSeconds((player!.currentItem?.asset.duration)!))
-        
-    
-        
-        
-        
-        
+
         /*
         //fulscreen mode
         let playerViewController = AVPlayerViewController()
@@ -118,27 +89,7 @@ override func viewDidLoad() {
         //code from: https://stackoverflow.com/questions/25932570/how-to-play-video-with-avplayerviewcontroller-avkit-in-swift
     
         
-/*
-        // Do any additional setup after loading the view.
- 
-        let musicURL = URL(string: "https://audioboom.com/posts/7243055.mp3")
-        let task = URLSession.shared.dataTask(with: musicURL!)
-            self.finishedDownload = true
-            if let error = error {
-                print(error.localizedDescription)
-                return
-            }
-            self.audioPlayer = try AVAudioPlayer(data: musicData!)
-        }
-        task.resume()
- 
-    }
-    
-    func updateSlider() {
-        audioSlider.value = Float(audioPlayer.currentTime)
-    }
- 
-    
+
 
  /*
     // MARK: - Navigation
@@ -149,32 +100,72 @@ override func viewDidLoad() {
         // Pass the selected object to the new view controller.
     }
  */
- */
+ 
     }
     
+    @objc func updateSlider()
+    {
+        if(slider.isSelected == false)
+        {
+        slider.value = Float((player?.currentTime().seconds)!)
+        
+        let currentTime : CMTime = player!.currentTime()
+        let currentTimeSeconds : Float64 = CMTimeGetSeconds(currentTime)
+        
+        currentTimeLabel.text = self.stringFromTimeInterval(interval: currentTimeSeconds)
+        }
+    }
+
+    @IBAction func playButtonPressed(_ sender: UIButton) {
+        /*
+        if sender.isSelected == true {
+            sender.isSelected = false
+        }
+        if sender.isSelected == false{
+            sender.isSelected = true
+        }
+        */
+        if sender.isSelected {
+            player!.pause()
+            sender.isSelected = false
+        }
+        else {
+            player!.play()
+            sender.isSelected = true
+            
+        }
+    }
     
-    @IBAction func handlePlayheadSliderTouchBegin(_ sender: UISlider) {
+    func stringFromTimeInterval(interval: TimeInterval) -> String {
+        
+        let interval = Int(interval)
+        let seconds = interval % 60
+        let minutes = (interval / 60) % 60
+        let hours = (interval / 3600)
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+
+    
+    @IBAction func handlePlayHeadSliderTouchBegin(_ sender: UISlider) {
         player!.pause()
     }
     
-    @IBAction func handlePlayheadSliderValueChanged(_ sender: UISlider) {
-        
-        let duration : CMTime = player!.currentItem!.asset.duration
+    @IBAction func handlePlayHeadSliderValueChanged(_ sender: UISlider) {
+        let duration : CMTime = (player?.currentItem!.asset.duration)!
         let seconds : Float64 = CMTimeGetSeconds(duration) * Double(sender.value)
         //   var newCurrentTime: TimeInterval = sender.value * CMTimeGetSeconds(currentPlayer.currentItem.duration)
         currentTimeLabel.text = self.stringFromTimeInterval(interval: seconds)
     }
     
-    @IBAction func handlePlayheadSliderTouchEnd(_ sender: UISlider) {
-        
-        let duration : CMTime = player!.currentItem!.asset.duration
+    @IBAction func handlePlaySliderTouchEnd(_ sender: UISlider) {
+        let duration : CMTime = (player?.currentItem!.asset.duration)!
         var newCurrentTime: TimeInterval = Double(sender.value) * CMTimeGetSeconds(duration)
         var seekToTime: CMTime = CMTimeMakeWithSeconds(newCurrentTime, preferredTimescale: 600)
-        player?.seek(to: seekToTime)
+        player!.seek(to: seekToTime)
+        player!.play()
     }
     
     
-
-
+    
 
 }
