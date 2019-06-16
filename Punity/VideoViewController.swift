@@ -17,8 +17,10 @@ import AlamofireRSSParser
 class VideoViewController: UIViewController  {
  
     var video: Video?
-    var player: AVPlayer?
+    //var player: AVPlayer?
     var timer: Timer?
+    
+    var backgroundAudio: AVAudioPlayer?
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionTextView: UITextView!
@@ -29,6 +31,8 @@ class VideoViewController: UIViewController  {
     @IBOutlet weak var slider: UISlider!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
     
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
         
@@ -38,6 +42,17 @@ class VideoViewController: UIViewController  {
        print(video?.video_link)
         
         let videoURL = URL(string: video!.video_link)!
+        
+        let videoNSURL = NSURL(string: (video?.video_link)!)
+        
+        
+        do{
+        try backgroundAudio = AVAudioPlayer(contentsOf: videoURL)
+        } catch {
+            print("error getting video")
+        }
+        
+        /*
         player = AVPlayer(url: videoURL)
         player?.volume = 1.0
         
@@ -45,14 +60,14 @@ class VideoViewController: UIViewController  {
         let seconds : Float64 = CMTimeGetSeconds(duration)
         
         slider.maximumValue = Float((player!.currentItem?.asset.duration.seconds)!)
-        print(slider.maximumValue)
+        print("slider max value: \(slider.maximumValue)")
         durationLabel.text = self.stringFromTimeInterval(interval: seconds)
         
         let currentTime : CMTime = player!.currentTime()
         let currentTimeSeconds : Float64 = CMTimeGetSeconds(currentTime)
         
         currentTimeLabel.text = self.stringFromTimeInterval(interval: currentTimeSeconds)
-        
+        */
         
         /*
         do {
@@ -105,8 +120,9 @@ class VideoViewController: UIViewController  {
     
     @objc func updateSlider()
     {
+        /*
         if(slider.isSelected == false)
-        {
+         {
         slider.value = Float((player?.currentTime().seconds)!)
         
         let currentTime : CMTime = player!.currentTime()
@@ -114,9 +130,22 @@ class VideoViewController: UIViewController  {
         
         currentTimeLabel.text = self.stringFromTimeInterval(interval: currentTimeSeconds)
         }
+         */
     }
 
     @IBAction func playButtonPressed(_ sender: UIButton) {
+        
+        if(backgroundAudio?.isPlaying == true)
+        {
+            backgroundAudio?.stop()
+            playButton.setTitle("Play", for: .normal)
+        }
+        else
+        {
+            backgroundAudio?.play()
+            playButton.setTitle("Pause", for: .normal)
+        }
+        
         /*
         if sender.isSelected == true {
             sender.isSelected = false
@@ -125,6 +154,7 @@ class VideoViewController: UIViewController  {
             sender.isSelected = true
         }
         */
+        /*
         if sender.isSelected {
             player!.pause()
             sender.isSelected = false
@@ -134,6 +164,7 @@ class VideoViewController: UIViewController  {
             sender.isSelected = true
             
         }
+         */
     }
     
     func stringFromTimeInterval(interval: TimeInterval) -> String {
@@ -147,25 +178,57 @@ class VideoViewController: UIViewController  {
 
     
     @IBAction func handlePlayHeadSliderTouchBegin(_ sender: UISlider) {
-        player!.pause()
+        //player!.pause()
     }
     
     @IBAction func handlePlayHeadSliderValueChanged(_ sender: UISlider) {
+        /*
+        let sliderValue = slider.value
+        let newCurrentTime : CMTime = CMTimeMakeWithSeconds(Float64(sliderValue), preferredTimescale: 0)
+        player!.seek(to: newCurrentTime)
+        currentTimeLabel.text = self.stringFromTimeInterval(interval: newCurrentTime.seconds)
+         */
+        
+        /*
         let duration : CMTime = (player?.currentItem!.asset.duration)!
         let seconds : Float64 = CMTimeGetSeconds(duration) * Double(sender.value)
-        //   var newCurrentTime: TimeInterval = sender.value * CMTimeGetSeconds(currentPlayer.currentItem.duration)
+        //var newCurrentTime: TimeInterval = sender.value * CMTimeGetSeconds(player!.currentItem!.duration)
         currentTimeLabel.text = self.stringFromTimeInterval(interval: seconds)
+         */
+        
     }
     
     @IBAction func handlePlaySliderTouchEnd(_ sender: UISlider) {
+        backgroundAudio?.stop()
+        backgroundAudio?.currentTime = TimeInterval(slider.value)
+        backgroundAudio?.prepareToPlay()
+        backgroundAudio?.play()
+        
+        /*
+        let sliderValue = slider.value
+        let newCurrentTime : CMTime = CMTimeMakeWithSeconds(Float64(sliderValue), preferredTimescale: 0)
+        player!.seek(to: newCurrentTime)
+         */
+        
+        /*
         let duration : CMTime = (player?.currentItem!.asset.duration)!
         var newCurrentTime: TimeInterval = Double(sender.value) * CMTimeGetSeconds(duration)
         var seekToTime: CMTime = CMTimeMakeWithSeconds(newCurrentTime, preferredTimescale: 600)
         player!.seek(to: seekToTime)
         player!.play()
+         */
     }
     
-    
+    func downloadFileFromURL(url:NSURL){
+        
+        var downloadTask:URLSessionDownloadTask
+        downloadTask = URLSession.sharedSession.downloadTaskWithURL(url, completionHandler: { [weak self](URL, response, error) -> Void in
+            self?.play(URL)
+        })
+        
+        downloadTask.resume()
+        
+    }
     
 
 }
