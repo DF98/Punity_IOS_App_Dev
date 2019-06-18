@@ -35,6 +35,7 @@ class LoginViewController: ViewController, DatabaseListener {
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var welcomeLabel: UILabel!
+    @IBOutlet weak var errorLabel: UILabel!
     
     var enteredUsername: String = ""
     var enteredPassword: String = ""
@@ -47,6 +48,7 @@ class LoginViewController: ViewController, DatabaseListener {
     }
     
     @IBAction func loginButtonPressed(_ sender: Any) {
+        gainedAccess = false
         if (usernameField.text != "" || passwordField.text != "")
         {
             enteredUsername = usernameField.text!
@@ -55,6 +57,8 @@ class LoginViewController: ViewController, DatabaseListener {
         else
         {
             print("password and username field are empty")
+            errorLabel.text = "password and username field are empty"
+            errorLabel.isHidden = false
         }
         
         for user in userList
@@ -68,10 +72,13 @@ class LoginViewController: ViewController, DatabaseListener {
                 wantedUser.userID = user.userID
                 
                 gainedAccess = true
+                errorLabel.isHidden = true
             }
             else
             {
                 
+                errorLabel.text = "The details you have entered do not match any of our records"
+                errorLabel.isHidden = false
             }
         }
         

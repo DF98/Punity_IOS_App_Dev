@@ -1,0 +1,6 @@
+framework module Pods_Punity {
+  umbrella header "Pods-Punity-umbrella.h"
+
+  export *
+  module * { export * }
+}

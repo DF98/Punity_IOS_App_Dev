@@ -39,12 +39,17 @@ class VideoViewController: UIViewController  {
         titleLabel.text = video?.video_title
         descriptionTextView.text = video?.video_desc
         
-       print(video?.video_link)
+        print(video?.video_link)
         
         let videoURL = URL(string: video!.video_link)!
-        
+        if(video?.video_link != "")
+        {
         let videoNSURL = NSURL(string: (video?.video_link)!)
-        
+        }
+        else
+        {
+            print("episode could not be played :( ")
+        }
         
         do{
         try backgroundAudio = AVAudioPlayer(contentsOf: videoURL)
@@ -219,16 +224,6 @@ class VideoViewController: UIViewController  {
          */
     }
     
-    func downloadFileFromURL(url:NSURL){
-        
-        var downloadTask:URLSessionDownloadTask
-        downloadTask = URLSession.sharedSession.downloadTaskWithURL(url, completionHandler: { [weak self](URL, response, error) -> Void in
-            self?.play(URL)
-        })
-        
-        downloadTask.resume()
-        
-    }
     
 
 }

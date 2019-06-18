@@ -16,6 +16,8 @@ class EpisodesTableViewController: UITableViewController {
     
     weak var podcast: Podcast?
     var podcastVids: [Video] = []
+    var podcastThumbnails: [String] = []
+    
     var numOfRows: Int = 0
     
     override func viewDidLoad() {
@@ -27,6 +29,8 @@ class EpisodesTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
+        
+        
         let path = podcast?.rss_link
         RSSParser.getRSSFeedResponse(path: path!) { (rssFeed: RSSFeed?, status: NetworkResponseStatus) in
             for (item, element) in rssFeed!.items.enumerated(){
@@ -34,6 +38,7 @@ class EpisodesTableViewController: UITableViewController {
                 newVideo.video_title = element.title!
                 newVideo.video_link = element.link!
                 newVideo.video_desc = element.itemDescription!
+                self.podcastThumbnails = element.imagesFromContent!
                 
                 self.podcastVids.append(newVideo) 
                 
@@ -41,6 +46,8 @@ class EpisodesTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
         
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 44
     }
 
 
@@ -67,6 +74,10 @@ class EpisodesTableViewController: UITableViewController {
          */
         return podcastVids.count
     }
+    
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -76,11 +87,41 @@ class EpisodesTableViewController: UITableViewController {
         // Configure the cell...
         if (podcastVids.count > 0){
         cell.titleLabel.text = podcastVids[indexPath.row].video_title
+        cell.titleLabel.numberOfLines = 0
         }
-        
+            /*
+            This code was to try and display images in the cell for each episode, however the rss parser couldn't get url.
+            if(podcastThumbnails.count > 0)
+            {
+            let url = URL(string: podcastThumbnails[indexPath.row])
+            
+           
+            getData(from: url!) { data, response, error in
+                guard let data = data, error == nil else { return }
+                print(response?.suggestedFilename ?? url!.lastPathComponent)
+                print("Download Finished")
+                DispatchQueue.main.async() {
+                    //self.imageView.image = UIImage(data: data)
+                    cell.thumbImgView.image = UIImage(data: data)
+                    let cellHeight = cell.bounds.height
+                    //cell.thumbImgView.frame = CGRect(x: 194, y: 1, width: 181, height: 138.5)
+                    //cell.thumbImgView.frame.height = 138.5
+                    cell.thumbImgView.frame.size = CGSize(width: 300, height: 100)
+                    //cell.frame.size = CGSize(width: cell.frame.width, height: cell.thumbImgView.frame.height)
+                    
+                }
+            }
+            //cell.thumbImgView.image = downloadImage(from: URL(string: podcastVids[indexPath.row].vid_thumbnail)!)
+            }
+        }
+        */
         return cell
     }
     
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
 
     /*
     // Override to support conditional editing of the table view.
@@ -143,7 +184,6 @@ class EpisodesTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
-    
     
 
 }
