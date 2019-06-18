@@ -16,7 +16,6 @@ class EpisodesTableViewController: UITableViewController {
     
     weak var podcast: Podcast?
     var podcastVids: [Video] = []
-    var podcastThumbnails: [String] = []
     
     var numOfRows: Int = 0
     
@@ -38,7 +37,6 @@ class EpisodesTableViewController: UITableViewController {
                 newVideo.video_title = element.title!
                 newVideo.video_link = element.link!
                 newVideo.video_desc = element.itemDescription!
-                self.podcastThumbnails = element.imagesFromContent!
                 
                 self.podcastVids.append(newVideo) 
                 
