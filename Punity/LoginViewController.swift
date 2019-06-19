@@ -14,6 +14,7 @@ class LoginViewController: ViewController, DatabaseListener {
     }
     
     func onUserListChange(change: DatabaseChange, users: [User]) {
+        //assing the list of users in this view controller to the users listed in firebase.
         userList = users
     }
     
@@ -48,7 +49,10 @@ class LoginViewController: ViewController, DatabaseListener {
     }
     
     @IBAction func loginButtonPressed(_ sender: Any) {
+        
         gainedAccess = false
+        
+        //make sure that the text fields are populated.
         if (usernameField.text != "" || passwordField.text != "")
         {
             enteredUsername = usernameField.text!
@@ -100,6 +104,8 @@ class LoginViewController: ViewController, DatabaseListener {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //after validating the details, pass the desired user object to the next view controller.
+        
         // Get the new view controller using segue.destination.
          let desiredScreen = segue.destination as! MainViewController
         // Pass the selected object to the new view controller.
@@ -107,12 +113,14 @@ class LoginViewController: ViewController, DatabaseListener {
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        // override the should perform segue method to stop unauthorised access
         if (gainedAccess == false)
         {
             return false
         }
         else
         {
+            // if the user details are good and match to a user allow them to pass into the next screen.
         return true
         }
     }

@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import AlamofireRSSParser
+import SwiftyXMLParser
 
 class EpisodesTableViewController: UITableViewController {
    
@@ -28,22 +29,25 @@ class EpisodesTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        
-        
+
         let path = podcast?.rss_link
         RSSParser.getRSSFeedResponse(path: path!) { (rssFeed: RSSFeed?, status: NetworkResponseStatus) in
+            //for loop to iterate thorugh podcastVids array and rss feed and assign values appropriatley
             for (item, element) in rssFeed!.items.enumerated(){
                let newVideo = Video()
+                //assigning a new video objects attributs to appropriate rss feed item.
                 newVideo.video_title = element.title!
                 newVideo.video_link = element.link!
                 newVideo.video_desc = element.itemDescription!
                 
+                //append the new video to the podcast videos array in order to display information in the table view later
                 self.podcastVids.append(newVideo) 
                 
             }
+            //need to reload the data, so that when the XML parser gets the data we can display the changes
             self.tableView.reloadData()
         }
-        
+        //these 2 lines of code are to dynamically resize table cells. sourced from https://www.raywenderlich.com/8549-self-sizing-table-view-cells
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
     }
@@ -83,8 +87,11 @@ class EpisodesTableViewController: UITableViewController {
     let cell = tableView.dequeueReusableCell(withIdentifier: self.EPISODE_CELL, for: indexPath) as! EpisodeTableViewCell
         
         // Configure the cell...
+        //this if statement is to prevent the app from crashing, as it takes time to fetch the XML data.
         if (podcastVids.count > 0){
+        //assign the title label text to the appropriate podcast video title
         cell.titleLabel.text = podcastVids[indexPath.row].video_title
+        //setting the number of lines to zero means that label will set however many lines it needs to display text properly.
         cell.titleLabel.numberOfLines = 0
         }
             /*
@@ -167,6 +174,7 @@ class EpisodesTableViewController: UITableViewController {
         
         if segue.identifier == "episodeToPlayer_Segue"
         {
+            //in this code, grabbing the cell the user selected and parsing the video object onto the video view controller.
             let indexPath = tableView.indexPathForSelectedRow!
             let video = podcastVids[indexPath.row]
             let destination = segue.destination as? VideoViewController

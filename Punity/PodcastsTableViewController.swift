@@ -28,6 +28,7 @@ class PodcastsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
     func onPodcastListChange(change: DatabaseChange, podcasts: [Podcast])
     {
+        //assigning the array of podcasts in this view controller to the all of the podcasts in the firestore.
         allPodcasts = podcasts
         updateSearchResults(for: navigationItem.searchController!)
         tableView.reloadData()
@@ -132,6 +133,7 @@ weak var databaseController: DatabaseProtocol?
         let podcasts = filteredPodcasts[indexPath.row]
         
         //cell.titleLabel.text = podcast.video_title
+        //display the title of the podcast in the cell
         cell.titleLabel.text = podcasts.pod_name
         
         return cell
@@ -190,6 +192,7 @@ weak var databaseController: DatabaseProtocol?
         // Pass the selected object to the new view controller.
         if segue.identifier == "podcastEpisode_Segue"
         {
+            //from the cell that the user selected and passing it to the episode table view controller.
             let indexPath = tableView.indexPathForSelectedRow!
             let podcast = allPodcasts[indexPath.row]
             let destination = segue.destination as? EpisodesTableViewController

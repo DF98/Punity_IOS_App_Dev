@@ -17,16 +17,17 @@ import AlamofireRSSParser
 class VideoViewController: UIViewController  {
  
     var video: Video?
-    //var player: AVPlayer?
+    var player: AVPlayer?
     var timer: Timer?
     
-    var backgroundAudio: AVAudioPlayer?
+    //var backgroundAudio: AVAudioPlayer?
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var currentTimeLabel: UILabel!
+    @IBOutlet weak var errorLabel: UILabel!
     
     @IBOutlet weak var slider: UISlider!
     override func viewDidLoad() {
@@ -34,14 +35,16 @@ class VideoViewController: UIViewController  {
         
         
     
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
+        //timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
         
         titleLabel.text = video?.video_title
         descriptionTextView.text = video?.video_desc
         
         print(video?.video_link)
         
+        /*
         let videoURL = URL(string: video!.video_link)!
+        
         if(video?.video_link != "")
         {
         let videoNSURL = NSURL(string: (video?.video_link)!)
@@ -56,11 +59,15 @@ class VideoViewController: UIViewController  {
         } catch {
             print("error getting video")
         }
+        */
         
-        /*
+        if (video!.video_link != "")
+        {
+        let videoURL = URL(string: video!.video_link)!
         player = AVPlayer(url: videoURL)
         player?.volume = 1.0
-        
+        }
+        /*
         let duration : CMTime = (player?.currentItem!.asset.duration)!
         let seconds : Float64 = CMTimeGetSeconds(duration)
         
@@ -85,14 +92,9 @@ class VideoViewController: UIViewController  {
         //audioSlider.maximumValue = Float(audioPlayer.duration)
         
 
-        /*
-        //fulscreen mode
-        let playerViewController = AVPlayerViewController()
-        playerViewController.player = player
-        self.present(playerViewController, animated: true) {
-            playerViewController.player!.play()
-        }
-         */
+        
+      
+        
         
         //getting the duration of the audio and setting max value of the slider to the duration
         //audioSlider.maximumValue = TimeInterval(player?.currentItem?.duration)
@@ -123,6 +125,34 @@ class VideoViewController: UIViewController  {
  
     }
     
+    
+    @IBAction func playButtonPressed(_ sender: UIButton) {
+        //purpose of this method is when the start listening button is pressed we redirect to avplayer view controller to play the audio and provide interactive audio controls.
+        
+        //if statement is to prevent app from crashing.
+        //code from: https://stackoverflow.com/questions/25932570/how-to-play-video-with-avplayerviewcontroller-avkit-in-swift
+        if (video?.video_link != "")
+        {
+            //fulscreen mode
+            let playerViewController = AVPlayerViewController()
+            playerViewController.player = player
+            self.present(playerViewController, animated: true) {
+                playerViewController.player!.play()
+            }
+        }
+            
+        else
+        {
+            //if there is no video link display an error message.
+            errorLabel.text = "This episode could not be played."
+            errorLabel.isHidden = false
+        }
+    }
+    
+    
+    /*
+     //this code was an attempt to add customised audio controls that would assist me in making clips later on.
+     
     @objc func updateSlider()
     {
         /*
@@ -138,6 +168,7 @@ class VideoViewController: UIViewController  {
          */
     }
 
+    
     @IBAction func playButtonPressed(_ sender: UIButton) {
         
         if(backgroundAudio?.isPlaying == true)
@@ -151,15 +182,15 @@ class VideoViewController: UIViewController  {
             playButton.setTitle("Pause", for: .normal)
         }
         
-        /*
+        
         if sender.isSelected == true {
             sender.isSelected = false
         }
         if sender.isSelected == false{
             sender.isSelected = true
         }
-        */
-        /*
+ 
+ 
         if sender.isSelected {
             player!.pause()
             sender.isSelected = false
@@ -169,7 +200,7 @@ class VideoViewController: UIViewController  {
             sender.isSelected = true
             
         }
-         */
+ 
     }
     
     func stringFromTimeInterval(interval: TimeInterval) -> String {
@@ -224,6 +255,6 @@ class VideoViewController: UIViewController  {
          */
     }
     
-    
+   */
 
 }
